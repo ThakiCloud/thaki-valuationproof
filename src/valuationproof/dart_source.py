@@ -1,4 +1,4 @@
-"""V4 CLI 의 공시 입력 — (1) 이미 수집한 로컬 데이터셋 재사용(기본), (2) 체인 고정본(JSON), (3) 발행사 1곳 소량 조회(--fetch).
+"""V4 CLI 의 공시 입력 (V4.2: 전환가액조정 수집은 adjust_events) — (1) 이미 수집한 로컬 데이터셋 재사용(기본), (2) 체인 고정본(JSON), (3) 발행사 1곳 소량 조회(--fetch).
 
 데이터셋 형식은 scripts/dart_cb_corrections_fetch.py 출력과 같다: <dir>/filings_all.json + <dir>/doc/<rcept_no>.txt.
 ⛔ DART 키는 환경변수 API_K_DART(또는 DART_API_KEY)에서만 읽고 출력·저장하지 않는다. 조회는 발행사 1곳·목록+원문만.
@@ -44,10 +44,13 @@ def export_fixture(chain: dict, texts: dict, path: str | Path, note: str = "") -
         t = texts.get(v["rcept_no"])
         vs.append({k: v.get(k) for k in ("rcept_no", "rcept_dt", "kind", "values", "link_method", "link_status", "changed_items")}
                   | {"doc_sha256": hashlib.sha256(t.encode("utf-8")).hexdigest() if t else None,
-                     "terms_cache": asof_terms.version_terms(t, v["values"]) if t else None})
+                     "terms_cache": asof_terms.version_terms(t, v["values"]) if t else v.get("terms_cache"),
+                     "board_dt": asof_terms.board_date(t) if t else v.get("board_dt")})
     fx = {"kind": "valuationproof.chain_fixture", "version": asof_terms.VERSION, "source": "OpenDART 공개 공시(전환사채권발행결정·기재정정)",
           "note": note or "공시 원문은 넣지 않는다. 값·원문 위치·sha256 만.", "origin": chain["origin"], "corp_code": chain.get("corp_code"),
           "series": chain.get("series"), "versions": vs}
+    for k in ("adjustments", "adjustment_coverage"):                     # V4.2 — 수집한 조정 사건·완전성 기록(오프라인 재현)
+        if chain.get(k) is not None: fx[k] = chain[k]
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(fx, ensure_ascii=False, indent=1), encoding="utf-8")
     return fx
@@ -57,6 +60,8 @@ def load_fixture(path: str | Path) -> tuple[dict, dict]:
     fx = json.loads(Path(path).read_text(encoding="utf-8"))
     if fx.get("kind") != "valuationproof.chain_fixture": raise ValueError("NOT_A_CHAIN_FIXTURE")
     ch = {"origin": fx["origin"], "corp_code": fx["corp_code"], "series": fx["series"], "versions": fx["versions"]}
+    for k in ("adjustments", "adjustment_coverage"):
+        if fx.get(k) is not None: ch[k] = fx[k]
     ch["structural_diff"] = change_v3.structural_diff(ch)
     return ch, {}
 

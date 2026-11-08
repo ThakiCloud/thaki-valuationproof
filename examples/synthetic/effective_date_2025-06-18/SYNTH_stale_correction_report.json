@@ -1,9 +1,9 @@
 {
  "tool": "valuationproof.audit_asof_v4",
- "version": "4.1.0",
+ "version": "4.2.0",
  "workbook": "SYNTH_stale_correction.xlsx",
- "workbook_sha256_before": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
- "workbook_sha256_after": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+ "workbook_sha256_before": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
+ "workbook_sha256_after": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
  "chain_origin": "20250314990001",
  "corp_code": "SYNTH001",
  "target_series": "1",
@@ -86,7 +86,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "coupon_rate_pct": {
    "field": "coupon_rate_pct",
@@ -127,7 +133,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "redemption_yield_pct": {
    "field": "redemption_yield_pct",
@@ -187,7 +199,13 @@
      "rcept_dt": "20260115",
      "value": "4.5"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "maturity_date": {
    "field": "maturity_date",
@@ -247,7 +265,13 @@
      "rcept_dt": "20260115",
      "value": "2028-09-30"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_price_krw": {
    "field": "conversion_price_krw",
@@ -295,7 +319,30 @@
    ],
    "auto_verdict_allowed": false,
    "approval_required": true,
-   "review_required": true
+   "review_required": true,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)",
+   "event_coverage": {
+    "status": "VERIFIED",
+    "reasons": [],
+    "passed": [
+     "C1_LIST_OK",
+     "C2_LIST_RANGE",
+     "C3_ALL_PARSED_OR_UNMATCHED",
+     "C4_SERIES_UNAMBIGUOUS",
+     "C5_PRICE_CONTINUITY",
+     "C6_CORRECTIONS_LINKED",
+     "C7_NO_CONFLICT"
+    ],
+    "knowledge_end": "20260131",
+    "chain_start": "20250211",
+    "collected_through": "20260131"
+   },
+   "coverage_status": "VERIFIED"
   },
   "refixing_floor_krw": {
    "field": "refixing_floor_krw",
@@ -343,7 +390,13 @@
      "rcept_dt": "20260115",
      "value": "6000"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "issue_date": {
    "field": "issue_date",
@@ -384,7 +437,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_start_date": {
    "field": "conversion_start_date",
@@ -425,7 +484,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_end_date": {
    "field": "conversion_end_date",
@@ -473,7 +538,13 @@
    ],
    "auto_verdict_allowed": false,
    "approval_required": true,
-   "review_required": true
+   "review_required": true,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "put_option": {
    "field": "put_option",
@@ -520,7 +591,13 @@
    "effective_status": "NOT_DEPENDENT",
    "option_status": "keyword_found",
    "review_required": true,
-   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인",
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "call_option": {
    "field": "call_option",
@@ -567,7 +644,13 @@
    "effective_status": "NOT_DEPENDENT",
    "option_status": "keyword_found",
    "review_required": true,
-   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인",
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   }
  },
  "findings": [
@@ -595,17 +678,21 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B3"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "3000000000",
    "v3_verdict": "match",
    "unit_source": "label:억원",
-   "item_id": "928dc16e3188eeca"
+   "item_id": "55c8900d1ec49d09"
   },
   {
    "field": "coupon_rate_pct",
@@ -631,17 +718,21 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B6"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "1.0",
    "v3_verdict": "match",
    "unit_source": "number_format_%",
-   "item_id": "d933edda65074052"
+   "item_id": "aa3b6e8d170de26a"
   },
   {
    "field": "redemption_yield_pct",
@@ -667,7 +758,7 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B7"
     }
    ],
@@ -684,12 +775,20 @@
     "4.0",
     "4.5"
    ],
+   "blocked_reasons": [
+    "효력일 미확정"
+   ],
    "approval_required": true,
    "auto_verdict_allowed": false,
+   "disclosure_value_basis": "asof_terms 선택값(효력일 키) — 후보 값 중 하나",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "4.0",
    "v3_verdict": "match",
    "unit_source": "number_format_%",
-   "item_id": "8fedad7f889f64d6"
+   "item_id": "93c273d5914a1ff8"
   },
   {
    "field": "maturity_date",
@@ -715,7 +814,7 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B8"
     }
    ],
@@ -732,11 +831,19 @@
     "2028-03-31",
     "2028-09-30"
    ],
+   "blocked_reasons": [
+    "효력일 미확정"
+   ],
    "approval_required": true,
    "auto_verdict_allowed": false,
+   "disclosure_value_basis": "asof_terms 선택값(효력일 키) — 후보 값 중 하나",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "2028-03-31",
    "v3_verdict": "match",
-   "item_id": "34d4b683fc1e067c"
+   "item_id": "0956fd23c626e56e"
   },
   {
    "field": "conversion_price_krw",
@@ -746,7 +853,7 @@
    "severity": "medium",
    "excel_cell": "Inputs!B4",
    "excel_value": 8500,
-   "disclosure_value": "10000",
+   "disclosure_value": "8500",
    "evidence": [
     {
      "doc": "DART:20250620990002",
@@ -762,7 +869,7 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B4"
     },
     {
@@ -779,19 +886,27 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "blocked_auto_class": "불일치",
-   "blocked_auto_subtype": "기준일 뒤 정정 선반영",
+   "blocked_auto_class": "일치",
+   "blocked_auto_subtype": null,
    "alternative_values": [
     "10000",
     "8500"
    ],
+   "blocked_reasons": [
+    "효력일 미확정"
+   ],
    "approval_required": true,
    "auto_verdict_allowed": false,
+   "disclosure_value_basis": "asof_terms 선택값(효력일 키) — 후보 값 중 하나",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "8500",
    "v3_verdict": "future_version",
    "matched_version_rcept": "20260115990004",
    "unit_source": "label:원/주",
-   "item_id": "6fe02d3333e72730"
+   "item_id": "8fa3cba7cddbaa6a"
   },
   {
    "field": "refixing_floor_krw",
@@ -817,17 +932,21 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "7000",
    "v3_verdict": "match",
    "unit_source": "assumed_won",
-   "item_id": "ce39f9be27b8618d"
+   "item_id": "c9325d7489c41e17"
   },
   {
    "field": "issue_date",
@@ -853,16 +972,20 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B9"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
    "model_value_normalized": "2025-03-31",
    "v3_verdict": "match",
-   "item_id": "f230dc937336f1a8"
+   "item_id": "0b3a24fc588564c1"
   },
   {
    "field": "conversion_start_date",
@@ -888,14 +1011,18 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B10"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
-   "item_id": "95a1ac1d59a92334"
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
+   "item_id": "3be6b10771c7290f"
   },
   {
    "field": "conversion_end_date",
@@ -921,7 +1048,7 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B11"
     }
    ],
@@ -938,9 +1065,17 @@
     "2028-02-29",
     "2028-08-31"
    ],
+   "blocked_reasons": [
+    "효력일 미확정"
+   ],
    "approval_required": true,
    "auto_verdict_allowed": false,
-   "item_id": "f07b3d0214a9d4a8"
+   "disclosure_value_basis": "asof_terms 선택값(효력일 키) — 후보 값 중 하나",
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
+   "item_id": "b148ac468a475eb1"
   },
   {
    "field": "put_option",
@@ -969,14 +1104,18 @@
     },
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B12"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
-   "item_id": "de476793f7f2bfba"
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
+   "item_id": "c03c67fc5ada4ce2"
   },
   {
    "field": "call_option",
@@ -1011,7 +1150,11 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "80aacfd34c9a7ced"
+   "mode": "restated",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "contract_effective_confirmed": false,
+   "item_id": "70333c58dc59147b"
   },
   {
    "field": null,
@@ -1025,7 +1168,7 @@
    "evidence": [
     {
      "doc": "xlsx:SYNTH_stale_correction.xlsx",
-     "sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+     "sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
      "cell": "Inputs!B1"
     }
    ],
@@ -1036,7 +1179,7 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "264f19ff32da4b66"
+   "item_id": "e378d59dfda7359e"
   }
  ],
  "counts": {
@@ -1045,7 +1188,8 @@
   "누락": 0,
   "미확인": 2,
   "해당없음": 0,
-  "확인 필요(효력일 미확정)": 4
+  "확인 필요(효력일 미확정)": 4,
+  "확인 필요(조정 공시 수집 미검증)": 0
  },
  "errors_found": 0,
  "needs_human_review": 6,
@@ -1058,82 +1202,104 @@
    "previous": "0000000000000000000000000000000000000000000000000000000000000000",
    "kind": "audit_v4_run",
    "payload": {
-    "workbook_sha256": "22df65e7732046cb8e08d53c7f45c674b8af1a19a88a3f8a09ec53208978a966",
+    "workbook_sha256": "15f1fb93bc32ac5f3c6c9c3e06e83bdc5a4da20b89b8be46f6517671d013b655",
     "chain_origin": "20250314990001",
     "as_of": "2025-06-18",
     "selected_version": "20250620990002"
    },
-   "event_hash": "12a8e93b26350a4a868bd58d987668694c0e50df197a54cdaa2de0f37e312970"
+   "event_hash": "8cdaf0fc0fa8e7d556107dfa1918c9e9ca021a7d26378d673ac41faf82b79706"
   },
   {
    "index": 1,
-   "previous": "12a8e93b26350a4a868bd58d987668694c0e50df197a54cdaa2de0f37e312970",
+   "previous": "8cdaf0fc0fa8e7d556107dfa1918c9e9ca021a7d26378d673ac41faf82b79706",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "8fedad7f889f64d6",
+    "item_id": "93c273d5914a1ff8",
     "class": "확인 필요(효력일 미확정)",
     "field": "redemption_yield_pct"
    },
-   "event_hash": "32fd7503a4ffbfc1f519c3e3d753df89a62cbe0e9efd4298010f32462df5e46a"
+   "event_hash": "211857c7028e86f46091b81d6061165624d3a519e506481de78e02a27ed96abc"
   },
   {
    "index": 2,
-   "previous": "32fd7503a4ffbfc1f519c3e3d753df89a62cbe0e9efd4298010f32462df5e46a",
+   "previous": "211857c7028e86f46091b81d6061165624d3a519e506481de78e02a27ed96abc",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "34d4b683fc1e067c",
+    "item_id": "0956fd23c626e56e",
     "class": "확인 필요(효력일 미확정)",
     "field": "maturity_date"
    },
-   "event_hash": "a02d5329b5a237fa8a2ffac7886af68919035fedac3c24fdd92fbb423d552f43"
+   "event_hash": "076d1b5d565aeed57d175ef92f53b4e9beb8fbc73a2c2496d0f7824f674c141a"
   },
   {
    "index": 3,
-   "previous": "a02d5329b5a237fa8a2ffac7886af68919035fedac3c24fdd92fbb423d552f43",
+   "previous": "076d1b5d565aeed57d175ef92f53b4e9beb8fbc73a2c2496d0f7824f674c141a",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "6fe02d3333e72730",
+    "item_id": "8fa3cba7cddbaa6a",
     "class": "확인 필요(효력일 미확정)",
     "field": "conversion_price_krw"
    },
-   "event_hash": "a758c34f8ad508f24ca2f35132fd1d383fbbf8f6dc0280aa8d342a3ce53562b1"
+   "event_hash": "b28a8a3b5a9e11cfeb78d4e8b87585b65fa60f284dd5d6be9c163e1cc06d8253"
   },
   {
    "index": 4,
-   "previous": "a758c34f8ad508f24ca2f35132fd1d383fbbf8f6dc0280aa8d342a3ce53562b1",
+   "previous": "b28a8a3b5a9e11cfeb78d4e8b87585b65fa60f284dd5d6be9c163e1cc06d8253",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "f07b3d0214a9d4a8",
+    "item_id": "b148ac468a475eb1",
     "class": "확인 필요(효력일 미확정)",
     "field": "conversion_end_date"
    },
-   "event_hash": "68966a5259db21ed43799444b88f1523b1d760625da8d5b99d73f89efdbdda97"
+   "event_hash": "3ef25568dd83244159ad6cbc6e16a44dc2b49436b4af96c3d8e0bcf42f7381a7"
   },
   {
    "index": 5,
-   "previous": "68966a5259db21ed43799444b88f1523b1d760625da8d5b99d73f89efdbdda97",
+   "previous": "3ef25568dd83244159ad6cbc6e16a44dc2b49436b4af96c3d8e0bcf42f7381a7",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "80aacfd34c9a7ced",
+    "item_id": "70333c58dc59147b",
     "class": "미확인",
     "field": "call_option"
    },
-   "event_hash": "3d80e9ea6b2217711ca3c6d96d68c7e9faa81879a252ad393c9301fc78159cba"
+   "event_hash": "4c95a49e6fa0568f2c3a95b05a0154933c9c07696c9b3f46332ce4688a0f0e00"
   },
   {
    "index": 6,
-   "previous": "3d80e9ea6b2217711ca3c6d96d68c7e9faa81879a252ad393c9301fc78159cba",
+   "previous": "4c95a49e6fa0568f2c3a95b05a0154933c9c07696c9b3f46332ce4688a0f0e00",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "264f19ff32da4b66",
+    "item_id": "e378d59dfda7359e",
     "class": "미확인",
     "field": null
    },
-   "event_hash": "efbf9b9bb0c0e05cdb0857fb6de80eef330be52249b0d89aaabcbdc4e5374e4f"
+   "event_hash": "de5ab60c0e97f1a1c7f6492eb1a6ab6c52d867275f4c81bf25805feed33c8203"
   }
  ],
  "effective_date_unconfirmed": 4,
  "ledger_ok": true,
+ "event_coverage_unverified": 0,
+ "engine": "4.2",
+ "mode": "restated",
+ "valuation_asof": "2025-06-18",
+ "knowledge_cutoff": "2026-01-31",
+ "event_coverage": {
+  "status": "VERIFIED",
+  "reasons": [],
+  "passed": [
+   "C1_LIST_OK",
+   "C2_LIST_RANGE",
+   "C3_ALL_PARSED_OR_UNMATCHED",
+   "C4_SERIES_UNAMBIGUOUS",
+   "C5_PRICE_CONTINUITY",
+   "C6_CORRECTIONS_LINKED",
+   "C7_NO_CONFLICT"
+  ],
+  "knowledge_end": "20260131",
+  "chain_start": "20250211",
+  "collected_through": "20260131"
+ },
+ "values_are": "DISCLOSURE_BASED_ESTIMATE",
  "claim_boundary": "[합성 데이터 — 가상 발행사·가상 공시] 합성 공시 체인 기준 결정론 대조. 공시 ≠ 서명 계약. 판정은 회계사 검토 후보(PENDING). 자동 수정 없음.",
  "v3_as_of_source": "argument",
  "data_kind": "합성 공시 체인(가상 발행사, SYNTHETIC)"

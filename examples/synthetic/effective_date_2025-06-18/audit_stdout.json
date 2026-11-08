@@ -11,11 +11,17 @@
   "누락": 0,
   "미확인": 2,
   "해당없음": 0,
-  "확인 필요(효력일 미확정)": 4
+  "확인 필요(효력일 미확정)": 4,
+  "확인 필요(조정 공시 수집 미검증)": 0
  },
  "errors_found": 0,
  "needs_human_review": 6,
  "approval_status": "PENDING",
+ "engine": "4.2",
+ "mode": "restated",
+ "knowledge_cutoff": "2026-01-31",
+ "event_coverage": "VERIFIED",
+ "values_are": "DISCLOSURE_BASED_ESTIMATE",
  "reports": {
   "json": "examples/synthetic/effective_date_2025-06-18/SYNTH_stale_correction_report.json",
   "md": "examples/synthetic/effective_date_2025-06-18/SYNTH_stale_correction_report.md",

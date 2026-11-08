@@ -11,6 +11,8 @@ V4 분류(class):
   해당없음  공시에도 모형에도 없음
   확인 필요(효력일 미확정)  (4.1) 효력일이 공시로 확정되지 않아 기준일 선택이 갈리는 필드 — 자동 일치/불일치/누락 판정을 내지 않는다.
             원래 규칙 결과는 blocked_auto_class 로만 남기고 사람 승인(approval_required)을 요구한다. asof_terms R7.
+  확인 필요(조정 공시 수집 미검증)  (4.2) 전환가액 조정 공시 수집 완전성(C1~C7)을 확인 못 함 — 자동 판정 금지(asof_terms R11).
+  (4.2) '확인 필요' 행의 공시 값 = asof_terms 가 고른 값(효력일 키)과 후보 값(alternative_values). 접수일 기준 V3 기대값이 아니다.
 ⛔ 알려진 약점 처리:
   - 사전 밖 동의어(V3 hidden 오경보 0.93): V3 가 missing_in_model 을 내더라도, 워크북에 사전이 못 읽은 라벨-값 쌍이 있고
     그 값이 그 필드의 형식(날짜/금액/퍼센트)과 맞으면 '누락'으로 확정하지 않고 '미확인(사전 밖 라벨 가능성)'으로 보낸다.
@@ -29,9 +31,10 @@ from pathlib import Path
 
 from . import asof_terms, excel_v3, ledger
 
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 EFF_CLASS = asof_terms.EFF_UNCONFIRMED
-CLASSES = ("일치", "불일치", "누락", "미확인", "해당없음", EFF_CLASS)
+COV_CLASS = asof_terms.COV_KO
+CLASSES = ("일치", "불일치", "누락", "미확인", "해당없음", EFF_CLASS, COV_CLASS)
 AUTO_CLASSES = ("일치", "불일치", "누락")
 HIGH_FIELDS = {"conversion_price_krw", "refixing_floor_krw", "principal_krw", "maturity_date", "put_option", "call_option"}
 EXTRA_SYN = {
@@ -177,9 +180,12 @@ def _suggest(cls: str, sub: str | None, cell: str | None, disc, label: str) -> d
     return None
 
 
-def audit(excel: str | Path, chain: dict, texts: dict, as_of: str, *, target_series: str | None = None) -> dict:
+def audit(excel: str | Path, chain: dict, texts: dict, as_of: str, *, target_series: str | None = None,
+          engine: str = "4.2", mode: str = "restated", knowledge_cutoff: str | None = None) -> dict:
     p = Path(excel); before = _sha(p.read_bytes())
-    terms = asof_terms.resolve(chain, texts, as_of)
+    terms = asof_terms.resolve(chain, texts, as_of, engine=engine, mode=mode, knowledge_cutoff=knowledge_cutoff)
+    if engine == "4.2" and mode == "as_known":       # Excel 대조도 같은 지식 시점의 버전만
+        chain = asof_terms.knowledge_view(chain, asof_terms.ymd(knowledge_cutoff or as_of))[0]
     T = asof_terms.ymd(as_of)
     hashes = {v["rcept_no"]: asof_terms.doc_sha(v, texts) for v in chain["versions"]}
     v3 = excel_v3.audit_workbook_v3(p, chain, as_of=T, target_series=target_series, doc_hashes=hashes)
@@ -199,14 +205,24 @@ def audit(excel: str | Path, chain: dict, texts: dict, as_of: str, *, target_ser
         if extra and extra.get("matched_version_rcept"):
             m = extra["matched_version_rcept"]; ev.append({"doc": f"DART:{m}", "rcept_no": m, "url": asof_terms.DART_VIEW.format(m), "role": "Excel 값과 같은 다른 버전"})
         blocked = None
-        if term and term.get("effective_status") == "UNCONFIRMED_DEPENDS" and cls in AUTO_CLASSES:   # R7 — 자동 판정 금지
-            blocked = {"blocked_auto_class": cls, "blocked_auto_subtype": sub, "alternative_values": term.get("alternative_values")}
-            cls, sub = EFF_CLASS, f"효력일 미확정 — 기준일 선택이 효력일에 달림(후보 값 {term.get('alternative_values')}). 사람 승인 전 판정 없음"
+        eff_unc = bool(term and term.get("effective_status") == "UNCONFIRMED_DEPENDS")
+        cov_unv = bool(term and term.get("coverage_status") == asof_terms.COV_UNVERIFIED)
+        if (eff_unc or cov_unv) and cls in AUTO_CLASSES:                                  # R7·R11 — 자동 판정 금지
+            reasons = (["효력일 미확정"] if eff_unc else []) + ([f"조정 공시 수집 미검증: {'; '.join((term.get('event_coverage') or {}).get('reasons', []))}"] if cov_unv else [])
+            blocked = {"blocked_auto_class": cls, "blocked_auto_subtype": sub, "alternative_values": term.get("alternative_values"), "blocked_reasons": reasons}
+            if eff_unc:
+                cls, sub = EFF_CLASS, f"효력일 미확정 — 기준일 선택이 효력일에 달림(후보 값 {term.get('alternative_values')}). 사람 승인 전 판정 없음"
+            else:
+                cls, sub = COV_CLASS, f"조정 공시 수집 완전성 미확인 — 전환가액 후보 {term.get('value')}. 사람 승인 전 판정 없음"
+            disc_val = term.get("value")         # V4.2 수정(공개본 피드백 3): 후보 값과 같은 기준(효력일 키)의 값을 공시 값으로
         hr = cls != "일치" and cls != "해당없음" or bool(term and term.get("link_review_required"))
         row = {"field": field, "label_ko": label, "class": cls, "subtype": sub, "severity": _sev(field, cls, sub), "excel_cell": cell,
                "excel_value": _clean(xval), "disclosure_value": disc_val, "evidence": ev, "human_review_required": hr,
                "suggestion": _suggest(cls, sub, cell, disc_val, label), "approval_status": "PENDING"}
-        if blocked: row |= blocked | {"approval_required": True, "auto_verdict_allowed": False, "suggestion": _suggest("미확인", sub, cell, disc_val, label)}
+        if blocked: row |= blocked | {"approval_required": True, "auto_verdict_allowed": False, "suggestion": _suggest("미확인", sub, cell, disc_val, label),
+                                      "disclosure_value_basis": "asof_terms 선택값(효력일 키) — 후보 값 중 하나"}
+        if term: row |= {"mode": term.get("mode"), "knowledge_cutoff": term.get("knowledge_cutoff"), "value_basis": term.get("value_basis"),
+                         "contract_effective_confirmed": term.get("contract_effective_confirmed")}
         if extra: row.update({k: v for k, v in extra.items() if v is not None})
         if row.get("matched_version_rcept") and sub in ("정정 미반영", "기준일 뒤 정정 선반영"):
             row["subtype"] = f"{sub}(Excel 값 = {row['matched_version_rcept']} 버전 값)"
@@ -224,6 +240,11 @@ def audit(excel: str | Path, chain: dict, texts: dict, as_of: str, *, target_ser
             same = str(fd["model_value"]) == str(t["value"])
             cls, sub = ("일치", None) if same else ("불일치", f"값 불일치(전환가액 조정 {t['adjusted_by']['rcept_no']} 반영)")
             fd = fd | {"expected": t["value"]}
+        elif (engine == "4.2" and t and fd.get("model_value") is not None and cls in AUTO_CLASSES and fd.get("expected") is not None
+              and str(fd["expected"]) != str(t["value"])):      # 4.2: V3(접수일 키) 기대값 ≠ 효력일 키 값 → 효력일 키 값으로 다시 본다
+            same = str(fd["model_value"]) == str(t["value"])
+            cls, sub = ("일치", None) if same else ("불일치", "값 불일치(효력일 키 기준값)")
+            fd = fd | {"expected": t["value"], "v3_expected_rcept_key": fd.get("expected")}
         extra = {"model_value_normalized": fd.get("model_value"), "v3_verdict": fd["verdict"], "v3_reason": fd.get("reason"),
                  "matched_version_rcept": fd.get("matched_version_rcept"), "unit_source": fd.get("unit_source"),
                  "possible_synonym_cells": cands or None,
@@ -286,6 +307,9 @@ def audit(excel: str | Path, chain: dict, texts: dict, as_of: str, *, target_ser
             "errors_found": len(errors), "needs_human_review": sum(x["human_review_required"] for x in findings),
             "auto_fix_applied": 0, "approval_status": "PENDING", "side_effects": False, "ledger": events,
             "effective_date_unconfirmed": sum(x["class"] == EFF_CLASS for x in findings), "ledger_ok": ledger.verify_events(events),
+            "event_coverage_unverified": sum(x["class"] == COV_CLASS for x in findings), "engine": terms.get("engine"),
+            "mode": terms.get("mode"), "valuation_asof": terms.get("valuation_asof"), "knowledge_cutoff": terms.get("knowledge_cutoff"),
+            "event_coverage": terms.get("event_coverage"), "values_are": terms.get("values_are"),
             "claim_boundary": "공개 공시(OpenDART) 기준 결정론 대조. 공시 ≠ 서명 계약. 판정은 회계사 검토 후보(PENDING). 자동 수정 없음.",
             "v3_as_of_source": v3.get("as_of_source")}
 
@@ -305,7 +329,10 @@ def to_markdown(r: dict, title: str | None = None) -> str:
          f"- 평가 기준일 {r['as_of']} → 적용 공시 {sv.get('rcept_no')} (접수 {sv.get('rcept_dt')}, {sv.get('kind')})",
          f"- 기준일 뒤 접수라 제외한 정정: {', '.join(x['rcept_no'] for x in r['excluded_after_asof']) or '없음'}",
          f"- 결과: " + " · ".join(f"{k} {v}" for k, v in r["counts"].items()) + f" · 오류(불일치+누락) {r['errors_found']} · 사람 확인 {r['needs_human_review']}",
-         f"- 자동 수정 0 · 승인 상태 {r['approval_status']} · 해시 체인 {r['ledger_ok']}", "",
+         f"- 자동 수정 0 · 승인 상태 {r['approval_status']} · 해시 체인 {r['ledger_ok']}",
+         f"- 엔진 {r.get('engine')} · 모드 {r.get('mode')} · 기준일 {r.get('valuation_asof')} · 지식 시점 {r.get('knowledge_cutoff')} · "
+         f"전환가액 조정 수집 {((r.get('event_coverage') or {}).get('status'))}",
+         "- 값은 공시 기반 추정치다(계약상 효력일 미확인, contract_effective_confirmed=False).", "",
          f"> {r['claim_boundary']}", "",
          "| # | 조건 | 분류 | 세부 | 심각도 | Excel 셀 | Excel 값 | 공시 값(기준일) | 근거 공시 | 사람 확인 |", "|---|---|---|---|---|---|---|---|---|---|"]
     for i, x in enumerate(r["findings"], 1):
@@ -326,13 +353,14 @@ def to_markdown(r: dict, title: str | None = None) -> str:
 
 def to_html(r: dict, title: str | None = None) -> str:
     e = html.escape
-    color = {"일치": "#1a7f37", "불일치": "#cf222e", "누락": "#bc4c00", "미확인": "#9a6700", "해당없음": "#6e7781", EFF_CLASS: "#8250df"}
+    color = {"일치": "#1a7f37", "불일치": "#cf222e", "누락": "#bc4c00", "미확인": "#9a6700", "해당없음": "#6e7781",
+             EFF_CLASS: "#8250df", COV_CLASS: "#8250df"}           # V4.2 수정(공개본 피드백 1): '확인 필요' 행 KeyError
     sv = r.get("selected_version") or {}
     rows = []
     for i, x in enumerate(r["findings"], 1):
         d = next((ev for ev in x["evidence"] if ev.get("rcept_no") and ev.get("line") is not None), None) or next((ev for ev in x["evidence"] if ev.get("rcept_no")), None)
         link = f'<a href="{e(d["url"])}">{e(d["rcept_no"])}</a>' + (f' L{d["line"]}' if d.get("line") else "") if d else ""
-        rows.append(f"<tr><td>{i}</td><td>{e(x['label_ko'])}</td><td style='color:{color[x['class']]};font-weight:600'>{e(x['class'])}</td>"
+        rows.append(f"<tr><td>{i}</td><td>{e(x['label_ko'])}</td><td style='color:{color.get(x['class'], "#9a6700")};font-weight:600'>{e(x['class'])}</td>"
                     f"<td>{e(x['subtype'] or '')}</td><td>{e(x['severity'])}</td><td><code>{e(x['excel_cell'] or '')}</code></td>"
                     f"<td>{e(_fmt(x['excel_value']))}</td><td>{e(_fmt(x['disclosure_value']))}</td><td>{link}</td>"
                     f"<td>{'예' if x['human_review_required'] else ''}</td><td>{e((x.get('suggestion') or {}).get('text', ''))}</td></tr>")

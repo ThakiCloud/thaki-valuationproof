@@ -69,7 +69,7 @@ def test_live_mode_requires_user_key(tmp_path):
 
 def test_unconfirmed_effective_date_is_never_auto_judged(tmp_path, capsys):
     from valuationproof import audit_v4
-    ch, tx = synthetic.load()
+    ch, tx = synthetic.load_v42()                                       # V4.2 chain: adjustment collection complete (coverage VERIFIED)
     r = asof_terms.resolve(ch, tx, synthetic.EFFECTIVE_DATE_ASOF)      # after C1 board date, before C1 was filed
     t = r["terms"]["conversion_price_krw"]
     assert t["effective_status"] == "UNCONFIRMED_DEPENDS" and t["status_ko"] == asof_terms.EFF_UNCONFIRMED
@@ -81,3 +81,55 @@ def test_unconfirmed_effective_date_is_never_auto_judged(tmp_path, capsys):
     assert f["class"] == asof_terms.EFF_UNCONFIRMED and f["auto_verdict_allowed"] is False and f["approval_required"] is True
     paths = audit_v4.write_reports(a, tmp_path / "e", "eff")                # HTML/MD must render the 4.1 class
     assert asof_terms.EFF_UNCONFIRMED in open(paths["html"], encoding="utf-8").read()
+
+
+# ── V4.2 (synthetic adjustment filings, in-memory source — still no network) ─────────────────────────────────────
+def test_v42_synthetic_collection_and_bitemporal_modes():
+    from valuationproof import adjust_events
+    ch, tx = synthetic.load_v42()
+    cov = ch["adjustment_coverage"]
+    assert cov["problems"] == [] and all(w["ok"] for w in cov["list_windows"]) and len(ch["adjustments"]) == 1
+    ev = ch["adjustments"][0]
+    assert (ev["effective_at"], ev["known_at"], ev["before_krw"], ev["conversion_price_krw"]) == ("20251120", "20251121", "8500", "7800")
+    assert ev["revisions"][0]["rcept_no"] == "20251205990006" and ev["revisions"][0]["known_at"] == "20251205"
+    T = synthetic.V42_ASOF
+    rs = asof_terms.resolve(ch, tx, T)["terms"]["conversion_price_krw"]
+    assert rs["value"] == "7750" and rs["mode"] == "restated" and rs["coverage_status"] == "VERIFIED"
+    assert rs["adjusted_by"]["bitemporal"] == {"rcept_dt": "20251121", "effective_at": "20251120", "known_at": "20251205"}
+    assert rs["value_basis"] == asof_terms.VALUE_BASIS and rs["contract_effective_confirmed"] is False
+    assert asof_terms.resolve(ch, tx, T, mode="as_known")["terms"]["conversion_price_krw"]["value"] == "8500"
+    assert asof_terms.resolve(ch, tx, T, mode="as_known", knowledge_cutoff="2025-11-30")["terms"]["conversion_price_krw"]["value"] == "7800"
+    assert asof_terms.resolve(ch, tx, synthetic.DEFAULT_ASOF)["terms"]["conversion_price_krw"]["value"] == "8500"   # before the adjustment
+    assert "dart.fss.or.kr" not in json.dumps(ch["adjustments"], ensure_ascii=False)
+    assert adjust_events.report_class("분기보고서 [SYNTHETIC]") == "other"
+
+
+@pytest.mark.parametrize("fail,check", [("list_page", "C1_LIST_OK"), ("off", "C0_COLLECTED")])
+def test_v42_broken_collection_is_never_auto_judged(tmp_path, capsys, fail, check):
+    from valuationproof import audit_v4
+    ch, tx = synthetic.load_v42(fail=fail)
+    t = asof_terms.resolve(ch, tx, "2025-12-31")["terms"]["conversion_price_krw"]
+    assert t["coverage_status"] == asof_terms.COV_UNVERIFIED and t["auto_verdict_allowed"] is False and t["approval_required"]
+    assert t["event_coverage"]["reasons"][0].startswith(check)
+    cli.main(["demo", "--out", str(tmp_path / "d")]); capsys.readouterr()
+    a = audit_v4.audit(tmp_path / "d" / "SYNTH_normal.xlsx", ch, tx, "2025-12-31")
+    f = {x["field"]: x for x in a["findings"] if x["field"]}["conversion_price_krw"]
+    assert f["class"] == audit_v4.COV_CLASS and f["auto_verdict_allowed"] is False and a["event_coverage_unverified"] == 1
+    assert audit_v4.COV_CLASS in open(audit_v4.write_reports(a, tmp_path / "r", "cov")["html"], encoding="utf-8").read()
+
+
+def test_v42_cli_terms_and_demo_offline(tmp_path, capsys):
+    cli.main(["terms", "--synthetic", "--asof", synthetic.V42_ASOF])
+    by = {x["mode"]: x for x in json.loads(capsys.readouterr().out)["results"]}
+    assert by["restated"]["terms"]["conversion_price_krw"]["value"] == "7750" and by["as_known"]["terms"]["conversion_price_krw"]["value"] == "8500"
+    assert by["restated"]["event_coverage"]["status"] == "VERIFIED"
+    cli.main(["terms", "--synthetic", "--asof", synthetic.V42_ASOF, "--adjustments", "off", "--mode", "restated"])
+    assert json.loads(capsys.readouterr().out)["results"][0]["terms"]["conversion_price_krw"]["coverage_status"] == asof_terms.COV_UNVERIFIED
+    cli.main(["terms", "--synthetic", "--asof", synthetic.V42_ASOF, "--engine", "4.1"])
+    v41 = json.loads(capsys.readouterr().out)["results"][0]
+    assert v41["mode"] == "v41" and v41["terms"]["conversion_price_krw"]["value"] == "8500"          # V4.1: adjustments not collected
+    cli.main(["demo", "--out", str(tmp_path / "d")])
+    out = json.loads(capsys.readouterr().out)
+    assert [x["value"] for x in out["v42_synthetic_demo"]] == ["7750", "8500", "7800", "8500", "8500"]
+    assert [x["coverage_status"] for x in out["v42_synthetic_demo"]][-2:] == [asof_terms.COV_UNVERIFIED] * 2
+    assert "dart.fss.or.kr" not in (tmp_path / "d" / "v42_synthetic_demo.json").read_text(encoding="utf-8")

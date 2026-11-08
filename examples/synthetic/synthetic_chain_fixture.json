@@ -1,6 +1,6 @@
 {
  "kind": "valuationproof.chain_fixture",
- "version": "4.1.0",
+ "version": "4.2.0",
  "source": "OpenDART 공개 공시(전환사채권발행결정·기재정정)",
  "note": "SYNTHETIC — fictional issuer, made-up filings",
  "origin": "20250314990001",
@@ -167,7 +167,8 @@
      },
      "option_status": "keyword_found"
     }
-   }
+   },
+   "board_dt": "20250312"
   },
   {
    "rcept_no": "20250620990002",
@@ -332,7 +333,8 @@
      },
      "option_status": "keyword_found"
     }
-   }
+   },
+   "board_dt": "20250616"
   },
   {
    "rcept_no": "20250930990003",
@@ -499,7 +501,8 @@
      },
      "option_status": "keyword_found"
     }
-   }
+   },
+   "board_dt": "20250616"
   },
   {
    "rcept_no": "20260115990004",
@@ -664,7 +667,8 @@
      },
      "option_status": "keyword_found"
     }
-   }
+   },
+   "board_dt": "20260112"
   }
  ],
  "synthetic": true

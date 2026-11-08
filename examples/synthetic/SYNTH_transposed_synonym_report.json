@@ -1,9 +1,9 @@
 {
  "tool": "valuationproof.audit_asof_v4",
- "version": "4.1.0",
+ "version": "4.2.0",
  "workbook": "SYNTH_transposed_synonym.xlsx",
- "workbook_sha256_before": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
- "workbook_sha256_after": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+ "workbook_sha256_before": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
+ "workbook_sha256_after": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
  "chain_origin": "20250314990001",
  "corp_code": "SYNTH001",
  "target_series": "1",
@@ -535,17 +535,21 @@
     },
     {
      "doc": "xlsx:SYNTH_transposed_synonym.xlsx",
-     "sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+     "sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
      "cell": "CB_terms!B5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "model_value_normalized": "3000000000",
    "v3_verdict": "match",
    "unit_source": "assumed_won",
-   "item_id": "3952a61f20548bb7"
+   "item_id": "c6364f1fb5c75b86"
   },
   {
    "field": "coupon_rate_pct",
@@ -577,6 +581,10 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "v3_verdict": "missing_in_model",
    "v3_reason": "field_not_found",
    "possible_synonym_cells": [
@@ -588,7 +596,7 @@
      "kind": "num"
     }
    ],
-   "item_id": "16ee68d5e95b8c15"
+   "item_id": "efbf1d5eeaa27fa8"
   },
   {
    "field": "redemption_yield_pct",
@@ -620,6 +628,10 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "v3_verdict": "missing_in_model",
    "v3_reason": "field_not_found",
    "possible_synonym_cells": [
@@ -631,7 +643,7 @@
      "kind": "num"
     }
    ],
-   "item_id": "e7645a077af6074c"
+   "item_id": "4a660ff63a508ac2"
   },
   {
    "field": "maturity_date",
@@ -657,16 +669,20 @@
     },
     {
      "doc": "xlsx:SYNTH_transposed_synonym.xlsx",
-     "sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+     "sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
      "cell": "CB_terms!E5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "model_value_normalized": "2028-09-30",
    "v3_verdict": "match",
-   "item_id": "3957be56600cdb2c"
+   "item_id": "5c5936a8d7e95d9c"
   },
   {
    "field": "conversion_price_krw",
@@ -692,17 +708,21 @@
     },
     {
      "doc": "xlsx:SYNTH_transposed_synonym.xlsx",
-     "sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+     "sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
      "cell": "CB_terms!C5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "model_value_normalized": "8500",
    "v3_verdict": "match",
    "unit_source": "assumed_won",
-   "item_id": "359d03c673edbeed"
+   "item_id": "eb9a58e16d429dfb"
   },
   {
    "field": "refixing_floor_krw",
@@ -728,17 +748,21 @@
     },
     {
      "doc": "xlsx:SYNTH_transposed_synonym.xlsx",
-     "sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+     "sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
      "cell": "CB_terms!D5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "model_value_normalized": "7000",
    "v3_verdict": "match",
    "unit_source": "assumed_won",
-   "item_id": "ce378acdbe42e78d"
+   "item_id": "4331646db95c3540"
   },
   {
    "field": "issue_date",
@@ -764,16 +788,20 @@
     },
     {
      "doc": "xlsx:SYNTH_transposed_synonym.xlsx",
-     "sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+     "sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
      "cell": "CB_terms!F5"
     }
    ],
    "human_review_required": false,
    "suggestion": null,
    "approval_status": "PENDING",
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
    "model_value_normalized": "2025-03-31",
    "v3_verdict": "match",
-   "item_id": "7a29438f2d3a91ad"
+   "item_id": "9f426bcfc62ec064"
   },
   {
    "field": "conversion_start_date",
@@ -805,7 +833,11 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "6eb5efa3bbb1e053"
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
+   "item_id": "fd06d39ff79d8f5a"
   },
   {
    "field": "conversion_end_date",
@@ -837,7 +869,11 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "4fe81dd5c7e50ade"
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
+   "item_id": "71e96817b0229fa7"
   },
   {
    "field": "put_option",
@@ -872,7 +908,11 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "f9133639117538e3"
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
+   "item_id": "64007a837a1ad04a"
   },
   {
    "field": "call_option",
@@ -907,7 +947,11 @@
     "auto_applied": false
    },
    "approval_status": "PENDING",
-   "item_id": "980d8907fb4ddf04"
+   "mode": null,
+   "knowledge_cutoff": null,
+   "value_basis": null,
+   "contract_effective_confirmed": false,
+   "item_id": "9ea21bdc521e9faf"
   }
  ],
  "counts": {
@@ -916,7 +960,8 @@
   "누락": 0,
   "미확인": 6,
   "해당없음": 0,
-  "확인 필요(효력일 미확정)": 0
+  "확인 필요(효력일 미확정)": 0,
+  "확인 필요(조정 공시 수집 미검증)": 0
  },
  "errors_found": 0,
  "needs_human_review": 6,
@@ -929,82 +974,89 @@
    "previous": "0000000000000000000000000000000000000000000000000000000000000000",
    "kind": "audit_v4_run",
    "payload": {
-    "workbook_sha256": "9a815249481ffc244f4868ba942a450b1b8206142830dabcf5f1fdebb6c73d76",
+    "workbook_sha256": "babeda34fab5ae421cbd8230595423eb80107e6418f4a09361aa6396a0c84506",
     "chain_origin": "20250314990001",
     "as_of": "2025-10-01",
     "selected_version": "20250930990003"
    },
-   "event_hash": "16742bf8dca4217a6b1a2e367b5cec732438ad108b54fe485af7bf4a5a011871"
+   "event_hash": "7739fff0e89862522ffc5be1b6fe4ce407d76353a5a4c65f4caeede20d03b2b3"
   },
   {
    "index": 1,
-   "previous": "16742bf8dca4217a6b1a2e367b5cec732438ad108b54fe485af7bf4a5a011871",
+   "previous": "7739fff0e89862522ffc5be1b6fe4ce407d76353a5a4c65f4caeede20d03b2b3",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "16ee68d5e95b8c15",
+    "item_id": "efbf1d5eeaa27fa8",
     "class": "미확인",
     "field": "coupon_rate_pct"
    },
-   "event_hash": "c127b9161e36ccaf48658fca6960f2fcb6e0ee65df4088241aeff7f4e7b81d24"
+   "event_hash": "398aef723101bc258af54354f98c2e18e7dec0addd0d31e45d53cf9f9d199453"
   },
   {
    "index": 2,
-   "previous": "c127b9161e36ccaf48658fca6960f2fcb6e0ee65df4088241aeff7f4e7b81d24",
+   "previous": "398aef723101bc258af54354f98c2e18e7dec0addd0d31e45d53cf9f9d199453",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "e7645a077af6074c",
+    "item_id": "4a660ff63a508ac2",
     "class": "미확인",
     "field": "redemption_yield_pct"
    },
-   "event_hash": "49ded546befcdc051baf52fe84aa541dbde12544e88f9723e8d683bcef17e863"
+   "event_hash": "41f70aa0a53b3ff9f1158cdb9ed30a2687c358fcceb7e63587ecd6ff8829ab61"
   },
   {
    "index": 3,
-   "previous": "49ded546befcdc051baf52fe84aa541dbde12544e88f9723e8d683bcef17e863",
+   "previous": "41f70aa0a53b3ff9f1158cdb9ed30a2687c358fcceb7e63587ecd6ff8829ab61",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "6eb5efa3bbb1e053",
+    "item_id": "fd06d39ff79d8f5a",
     "class": "미확인",
     "field": "conversion_start_date"
    },
-   "event_hash": "28be2ba2452bfb0473c555b0f04c80b4e323b3d9273a78e9d52ea084d39c9522"
+   "event_hash": "80ff8d1558f9a8d16290f91b8420416e4b003ebd07882770ab8cf41b3f06caf3"
   },
   {
    "index": 4,
-   "previous": "28be2ba2452bfb0473c555b0f04c80b4e323b3d9273a78e9d52ea084d39c9522",
+   "previous": "80ff8d1558f9a8d16290f91b8420416e4b003ebd07882770ab8cf41b3f06caf3",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "4fe81dd5c7e50ade",
+    "item_id": "71e96817b0229fa7",
     "class": "미확인",
     "field": "conversion_end_date"
    },
-   "event_hash": "abd431ddc8b27ecc73e0c75024e8456ad549c99c887c4799f8a4297ad3a8cfed"
+   "event_hash": "e86a95d8a6caf3d927f275882f3c4a4d97271002132b1587cd63df91735a0f07"
   },
   {
    "index": 5,
-   "previous": "abd431ddc8b27ecc73e0c75024e8456ad549c99c887c4799f8a4297ad3a8cfed",
+   "previous": "e86a95d8a6caf3d927f275882f3c4a4d97271002132b1587cd63df91735a0f07",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "f9133639117538e3",
+    "item_id": "64007a837a1ad04a",
     "class": "미확인",
     "field": "put_option"
    },
-   "event_hash": "4d6091ed0f35ec627f0fd00805d8e5cf5ee4b4fbffd378b0e53b5ac750f0d3b5"
+   "event_hash": "7c2505e4694b0a86dd1024d4596101a020270c6da123bef01ff49cbb66d45409"
   },
   {
    "index": 6,
-   "previous": "4d6091ed0f35ec627f0fd00805d8e5cf5ee4b4fbffd378b0e53b5ac750f0d3b5",
+   "previous": "7c2505e4694b0a86dd1024d4596101a020270c6da123bef01ff49cbb66d45409",
    "kind": "finding_pending",
    "payload": {
-    "item_id": "980d8907fb4ddf04",
+    "item_id": "9ea21bdc521e9faf",
     "class": "미확인",
     "field": "call_option"
    },
-   "event_hash": "2f8048a4256f5ed2c036407da45aa16be1b8213bb0607f92bb221a2c16b2e70f"
+   "event_hash": "18fefc4f549625d84902c13662dddfe2c19ade45d602e4b530ff9f5b41cfe267"
   }
  ],
  "effective_date_unconfirmed": 0,
  "ledger_ok": true,
+ "event_coverage_unverified": 0,
+ "engine": "4.1",
+ "mode": null,
+ "valuation_asof": null,
+ "knowledge_cutoff": null,
+ "event_coverage": null,
+ "values_are": null,
  "claim_boundary": "[합성 데이터 — 가상 발행사·가상 공시] 합성 공시 체인 기준 결정론 대조. 공시 ≠ 서명 계약. 판정은 회계사 검토 후보(PENDING). 자동 수정 없음.",
  "v3_as_of_source": "argument",
  "data_kind": "합성 공시 체인(가상 발행사, SYNTHETIC) + 합성 Excel(SYNTH_*) — 실제 공시·실제 평가모형 아님"

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valuationproof"
-version = "0.4.0"
+version = "0.4.2"
 description = "As-of convertible-bond terms from Korean DART disclosure/correction chains vs. valuation workbooks -> evidence reports for human review"
 readme = "README.md"
 license = {text = "Apache-2.0"}

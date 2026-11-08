@@ -1,4 +1,4 @@
-"""V4.1 효력일 키(R6)·효력일 미확정 자동 판정 금지(R7)·전환가액 조정 반영(R8). 전부 합성 체인·합성 원문(실공시 아님)."""
+"""[V4.2 에서 engine="4.1" 고정 — V4.1 동작 재현 회귀 시험] V4.1 효력일 키(R6)·효력일 미확정 자동 판정 금지(R7)·전환가액 조정 반영(R8). 전부 합성 체인·합성 원문(실공시 아님)."""
 import openpyxl
 
 from valuationproof import asof_terms, audit_v4, demo_v4
@@ -33,22 +33,22 @@ def test_board_date_and_adjustment_parsers():
 
 def test_r6_keys_on_disclosed_board_date_with_fallback_flag():
     ch, tx = chain()
-    r = asof_terms.resolve(ch, tx, "2025-02-27")                     # 새 결의일(2/25) 뒤, 접수일(3/1) 전
+    r = asof_terms.resolve(ch, tx, "2025-02-27", engine="4.1")                     # 새 결의일(2/25) 뒤, 접수일(3/1) 전
     assert r["selected_version"]["rcept_no"] == "20250301000002"
     t = r["terms"]["conversion_price_krw"]
     assert t["value"] == "900" and t["date_key"]["basis"] == "new_board_resolution" and t["date_key"]["date_key_fallback"] is False
     assert t["effective_status"] == "UNCONFIRMED_DEPENDS" and t["status_ko"] == asof_terms.EFF_UNCONFIRMED   # 결의일~접수일 사이 = 미확정
-    old = asof_terms.resolve(ch, tx, "2025-02-27", date_key="rcept_dt")
+    old = asof_terms.resolve(ch, tx, "2025-02-27", date_key="rcept_dt", engine="4.1")
     assert old["selected_version"]["rcept_no"] == "20250101000001" and old["terms"]["conversion_price_krw"]["value"] == "1000"
     ch2, tx2 = chain(board=False)
-    t2 = asof_terms.resolve(ch2, tx2, "2025-03-05")["terms"]["conversion_price_krw"]
+    t2 = asof_terms.resolve(ch2, tx2, "2025-03-05", engine="4.1")["terms"]["conversion_price_krw"]
     assert t2["date_key"]["date_key_fallback"] is True and t2["date_key"]["basis"].startswith("restatement")
     assert t2["effective_status"] == "NOT_DEPENDENT"                  # 기준일이 접수일 뒤면 소급 여부와 무관
 
 
 def test_r7_restatement_filed_after_asof_is_unconfirmed():
     ch, tx = chain(restate=True)                                      # 결의일 같음 = 기재 정정(소급 가능)
-    r = asof_terms.resolve(ch, tx, "2025-02-10")
+    r = asof_terms.resolve(ch, tx, "2025-02-10", engine="4.1")
     t = r["terms"]["conversion_price_krw"]
     assert t["value"] == "1000" and t["effective_status"] == "UNCONFIRMED_DEPENDS" and set(t["alternative_values"]) == {"1000", "900"}
     assert r["terms"]["principal_krw"]["effective_status"] == "NOT_DEPENDENT"    # 정정이 안 바꾼 필드는 자동 판정 가능
@@ -59,12 +59,12 @@ def test_r8_adjustment_keyed_on_effective_date_not_filing_date():
     ch, tx = chain()
     adj = {"rcept_no": "20250818900001", "rcept_dt": "20250818", "corp_code": "SYNTH01", "parsed": asof_terms.parse_adjustment(ADJ.format(eff="2025-08-17"))}
     ch["adjustments"] = asof_terms.adjustments_for(ch, [adj])
-    on_eff = asof_terms.resolve(ch, tx, "2025-08-17")["terms"]["conversion_price_krw"]
+    on_eff = asof_terms.resolve(ch, tx, "2025-08-17", engine="4.1")["terms"]["conversion_price_krw"]
     assert on_eff["value"] == "800" and on_eff["adjusted_by"]["effective_dt"] == "20250817" and on_eff["effective_status"] == "NOT_DEPENDENT"
-    assert asof_terms.resolve(ch, tx, "2025-08-17", date_key="rcept_dt")["terms"]["conversion_price_krw"]["value"] == "900"
-    assert asof_terms.resolve(ch, tx, "2025-08-16")["terms"]["conversion_price_krw"]["value"] == "900"
+    assert asof_terms.resolve(ch, tx, "2025-08-17", date_key="rcept_dt", engine="4.1")["terms"]["conversion_price_krw"]["value"] == "900"
+    assert asof_terms.resolve(ch, tx, "2025-08-16", engine="4.1")["terms"]["conversion_price_krw"]["value"] == "900"
     ch["adjustments"][0]["effective_dt"] = None                       # 적용일 판독 실패 → 접수일 fallback + 미확정 구간
-    t = asof_terms.resolve(ch, tx, "2025-08-10")["terms"]["conversion_price_krw"]
+    t = asof_terms.resolve(ch, tx, "2025-08-10", engine="4.1")["terms"]["conversion_price_krw"]
     assert t["value"] == "900" and t["effective_status"] == "UNCONFIRMED_DEPENDS"
 
 
@@ -73,19 +73,19 @@ def _wb(tmp_path, T, values, name):
     p = tmp_path / name; w.save(p); return p
 
 
-def _cur(ch, tx, T): return {f: t["value"] for f, t in asof_terms.resolve(ch, tx, T)["terms"].items()}
+def _cur(ch, tx, T): return {f: t["value"] for f, t in asof_terms.resolve(ch, tx, T, engine="4.1")["terms"].items()}
 
 
 def test_audit_blocks_auto_verdict_when_effective_date_unconfirmed(tmp_path):
     ch, tx = chain(restate=True); T = "2025-02-10"
     for cp, name in (("1000", "SYNTH_m.xlsx"), ("900", "SYNTH_n.xlsx")):      # 어느 쪽 값이든 자동 일치/불일치 금지
-        r = audit_v4.audit(_wb(tmp_path, T, _cur(ch, tx, T) | {"conversion_price_krw": cp}, name), ch, tx, T)
+        r = audit_v4.audit(_wb(tmp_path, T, _cur(ch, tx, T) | {"conversion_price_krw": cp}, name), ch, tx, T, engine="4.1")
         f = {x["field"]: x for x in r["findings"] if x["field"]}["conversion_price_krw"]
         assert f["class"] == audit_v4.EFF_CLASS and f["approval_required"] and f["auto_verdict_allowed"] is False
         assert f["human_review_required"] and f["suggestion"]["requires_approval"] and not f["suggestion"]["auto_applied"]
         assert r["counts"][audit_v4.EFF_CLASS] >= 1 and r["effective_date_unconfirmed"] >= 1 and r["auto_fix_applied"] == 0
     T2 = "2025-06-30"                                                            # 정정 접수 뒤 → 기존 자동 판정 유지
-    r2 = audit_v4.audit(_wb(tmp_path, T2, _cur(ch, tx, T2), "SYNTH_o.xlsx"), ch, tx, T2)
+    r2 = audit_v4.audit(_wb(tmp_path, T2, _cur(ch, tx, T2), "SYNTH_o.xlsx"), ch, tx, T2, engine="4.1")
     assert {x["field"]: x for x in r2["findings"] if x["field"]}["conversion_price_krw"]["class"] == "일치"
 
 
@@ -94,7 +94,7 @@ def test_audit_uses_adjustment_price(tmp_path):
     ch["adjustments"] = asof_terms.adjustments_for(ch, [{"rcept_no": "20250818900001", "rcept_dt": "20250818", "corp_code": "SYNTH01",
                                                           "parsed": asof_terms.parse_adjustment(ADJ.format(eff="2025-08-17"))}])
     v = _cur(ch, tx, T)
-    ok = {x["field"]: x for x in audit_v4.audit(_wb(tmp_path, T, v, "SYNTH_p.xlsx"), ch, tx, T)["findings"] if x["field"]}
+    ok = {x["field"]: x for x in audit_v4.audit(_wb(tmp_path, T, v, "SYNTH_p.xlsx"), ch, tx, T, engine="4.1")["findings"] if x["field"]}
     assert ok["conversion_price_krw"]["class"] == "일치"
-    bad = {x["field"]: x for x in audit_v4.audit(_wb(tmp_path, T, v | {"conversion_price_krw": "900"}, "SYNTH_q.xlsx"), ch, tx, T)["findings"] if x["field"]}
+    bad = {x["field"]: x for x in audit_v4.audit(_wb(tmp_path, T, v | {"conversion_price_krw": "900"}, "SYNTH_q.xlsx"), ch, tx, T, engine="4.1")["findings"] if x["field"]}
     assert bad["conversion_price_krw"]["class"] == "불일치" and "전환가액 조정" in bad["conversion_price_krw"]["subtype"]

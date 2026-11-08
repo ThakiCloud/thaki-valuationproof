@@ -11,7 +11,8 @@
     "누락": 0,
     "미확인": 1,
     "해당없음": 0,
-    "확인 필요(효력일 미확정)": 0
+    "확인 필요(효력일 미확정)": 0,
+    "확인 필요(조정 공시 수집 미검증)": 0
    },
    "errors_found": 0,
    "expectation_met": true
@@ -25,7 +26,8 @@
     "누락": 0,
     "미확인": 1,
     "해당없음": 0,
-    "확인 필요(효력일 미확정)": 0
+    "확인 필요(효력일 미확정)": 0,
+    "확인 필요(조정 공시 수집 미검증)": 0
    },
    "errors_found": 3,
    "expectation_met": true
@@ -39,7 +41,8 @@
     "누락": 0,
     "미확인": 1,
     "해당없음": 0,
-    "확인 필요(효력일 미확정)": 0
+    "확인 필요(효력일 미확정)": 0,
+    "확인 필요(조정 공시 수집 미검증)": 0
    },
    "errors_found": 2,
    "expectation_met": true
@@ -53,10 +56,38 @@
     "누락": 0,
     "미확인": 6,
     "해당없음": 0,
-    "확인 필요(효력일 미확정)": 0
+    "확인 필요(효력일 미확정)": 0,
+    "확인 필요(조정 공시 수집 미검증)": 0
    },
    "errors_found": 0,
    "expectation_met": true
+  }
+ ],
+ "v42_synthetic_demo": [
+  {
+   "scenario": "restated (all events published by 2026-01-31)",
+   "value": "7750",
+   "coverage_status": "VERIFIED"
+  },
+  {
+   "scenario": "as-known, knowledge cutoff = as-of",
+   "value": "8500",
+   "coverage_status": "VERIFIED"
+  },
+  {
+   "scenario": "as-known, knowledge cutoff 2025-11-30",
+   "value": "7800",
+   "coverage_status": "VERIFIED"
+  },
+  {
+   "scenario": "collection broken: list request failed (C1)",
+   "value": "8500",
+   "coverage_status": "EVENT_COVERAGE_UNVERIFIED"
+  },
+  {
+   "scenario": "collection off: --adjustments off (C0)",
+   "value": "8500",
+   "coverage_status": "EVENT_COVERAGE_UNVERIFIED"
   }
  ]
 }

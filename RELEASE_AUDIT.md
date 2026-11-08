@@ -1,12 +1,12 @@
 # Release audit — thaki-valuationproof
 
-점검일 2026-11-08 · 원본 커밋 `800a60149e0c44b6d279c08187c7928c0dcb374b` (ThakiCloud 비공개 저장소, sha 만 기록) · 결과: **PASS**
+점검일 2026-11-09 · 원본 커밋 `97fb95c919cd60fc1f0d914961dce9590fe2422b` (ThakiCloud 비공개 저장소, sha 만 기록) · 결과: **PASS**
 
 이 파일은 공개 전에 돌린 점검의 기록입니다. 점검 스크립트는 내부 경로를 참조하므로 레포에 넣지 않았고, 결과만 옮깁니다.
 
 ## 1. 테스트
 
-`pytest -q` → `60 passed in 0.58s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
+`pytest -q` → `82 passed in 1.05s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
 
 ## 2. 공개 표면 게이트 (release guard)
 
@@ -29,7 +29,9 @@
   - WARN · org-repo · `space/README.md` · ThakiCloud/thaki-valuationproof
   - WARN · company-name · `space/app.py` · ThakiCloud
   - WARN · org-repo · `space/app.py` · ThakiCloud/thaki-valuationproof
-  - WARN · history:company-name · `git history` · 내용 70건
+  - WARN · company-name · `src/valuationproof.egg-info/PKG-INFO` · ThakiCloud
+  - WARN · org-repo · `src/valuationproof.egg-info/PKG-INFO` · ThakiCloud/thaki-valuationproof
+  - WARN · history:company-name · `git history` · 내용 75건
 
 ## 3. 시크릿·내부 정보 스캔 (트리 + xlsx 내부 XML + git 히스토리(시크릿 값))
 
@@ -44,7 +46,7 @@
 | `secret_patterns` | 0 |
 | `private_repo_names` | 0 |
 | `aihub` | 0 |
-| `real_rcept_14digit` | 38 |
+| `real_rcept_14digit` | 53 |
 | `dart_corp_code_8digit` | 0 |
 | `exact_value_API_K_DART` | not_in_env |
 | `exact_value_DART_API_KEY` | 0 |
@@ -70,7 +72,9 @@
 
 ## 5. 외부 API 의존
 
-- **OpenDART** (`https://opendart.fss.or.kr/api/`) — 선택. `--fetch` 를 줄 때만, 사용자 본인 키(`API_K_DART` / `DART_API_KEY` 환경변수). 키는 출력·저장하지 않습니다. 기본 모드는 오프라인 합성.
+- **OpenDART** (`https://opendart.fss.or.kr/api/`) — 선택. 실제 데이터 모드(`--fetch`, 또는 V4.2 `--adjustments live` 로 실제 발행사 사슬을 열 때)에서만, 사용자 본인 키(`API_K_DART` / `DART_API_KEY` 환경변수)로 `list.json`·`document.xml` 을 부릅니다. 키는 출력·저장하지 않습니다.
+- 기본 모드는 오프라인 합성입니다. 합성 발행사 `SYNTH001` 은 `--adjustments live` 여도 네트워크를 쓰지 않고 메모리 안의 가짜 목록·원문 소스(`synthetic.SyntheticDart`)로 수집기를 돌립니다. 테스트가 이를 소켓 차단 상태에서 확인합니다.
+- `--event-cache` 로 지정한 수집 캐시는 사용자 로컬에만 쓰입니다. 레포에는 실제 DART 응답 캐시가 없습니다.
 - HF Space(정적 페이지): 방문자 브라우저가 Pyodide 런타임(cdn.jsdelivr.net, MPL-2.0)과 openpyxl·et_xmlfile(PyPI, MIT)을 받습니다. 사용자 데이터 전송 없음.
 - 그 밖의 외부 API·LLM·상용 서비스: 없음. 테스트는 소켓 연결을 막은 상태에서 오프라인 데모를 확인합니다.
 
@@ -95,8 +99,11 @@ HF Space 실행 환경(gradio 포함, 레포에 번들하지 않음) 전체 63�
 | 내부 플랫폼 연동 모듈(도구 계약·라우터 연결) | 내부 시스템 전용 |
 | 평가 스크립트·결과 원본(공개 공시 대량 수집·채점) | 실제 공시 파생물을 다룸. 집계 수치만 README 에 |
 | 비공개 저장소의 git 히스토리 | 새 히스토리로 시작 |
+| V4.2 실제 공시 회귀 픽스처(`tests/fixtures_private/`)·그 테스트(`test_v42_regression_private.py`) | 실제 DART 공시 파생 — 재배포하지 않음. 공개본은 같은 규칙을 합성 사건으로 검사 |
+| OpenDART 응답 캐시(`vp42_cache` 등) | 실제 공시 원문 — 재배포하지 않음 |
 | Gradio 서버형 HF Space | HF 가 조직 계정의 Gradio Space 생성을 거부(402, 유료 플랜 필요). 유료 결제는 하지 않고 정적 Space(브라우저 Pyodide)로 대체. Gradio 앱은 `space/` 에 소스로만 둠 |
 
 ## 8. 주장 경계
 
-검증된 것: 공개 DART 필드 기준 기준일 조건 선택(약한 정답), 합성 워크북 대조. 검증되지 않은 것: 실제 회계사 평가 Excel, 계약서, 비상장 RCPS, 공정가치, 고객 실증.
+검증된 것(소프트웨어 검증 결과): 공개 DART 필드 기준 기준일 조건 선택(약한 정답, 정답도 같은 수집 공시에서 만든 것이라 독립 대조가 아님), V4.2 조정 공시 수집·두 시간축·수집 검사의 합성 사건 동작, 합성 워크북 대조. 값은 공시 기반 추정치입니다.
+검증되지 않은 것: 계약상 효력일, 실제 회계사 평가 Excel, 계약서, 비상장 RCPS, 공정가치, 고객 실증, DART 전 조건 감사, 조정 [기재정정] 정정표 해석(C6).

@@ -15,6 +15,12 @@
   R7 (4.1, 오너 제약). 효력일이 공시로 확정되지 않아 T 에서 고를 값이 갈리는 필드는 effective_status=UNCONFIRMED_DEPENDS,
       status_ko='확인 필요(효력일 미확정)' — audit_v4 는 그 필드에 자동 일치/불일치/누락 판정을 내지 않고 사람 승인을 요구한다.
   R8 (4.1). chain['adjustments'] (전환가액의조정 공시, parse_adjustment) 가 있으면 전환가액에 반영한다 — 키 = 조정가액 적용일.
+  R9 (4.2, ledger/prereg_D_v42_1109.json). valuation_asof(기준일) 와 knowledge_cutoff(지식 시점)를 나눈다. 사건마다 rcept_dt·effective_at·known_at.
+      mode='as_known' = known_at <= cutoff 인 사건만, mode='restated' = 지금까지 알려진 사건 전부를 효력일로. 값마다 어느 모드인지 적는다.
+  R10 (4.2). 조정 사건 출처(rcept_no·보고서명·DART 링크·조정전/후·적용일·회차 매칭 근거·정정 개정)를 adjusted_by 에 남긴다.
+  R11 (4.2). 조정 공시 수집 완전성 C1~C7(coverage_check) 중 하나라도 실패하면 전환가액 = EVENT_COVERAGE_UNVERIFIED(자동 확정 금지, 사유 포함).
+      수집 기록(chain['adjustment_coverage'])이 없으면 C0 실패. engine='4.1' 은 V4.1 그대로(검사 없음).
+  R12 (4.2). 계약상 효력일 미확인 값은 value_basis=DISCLOSURE_BASED_ESTIMATE('공시 기반 추정치') — contract_effective_confirmed=False.
 조기상환(풋)·매도청구(콜)·전환청구기간은 dart_table 서식 필드가 아니라서 이 모듈의 텍스트 규칙으로 뽑는다.
 옵션은 '있다/없다 + 최초 날짜 후보'만 내고 조건 세부(행사가·비율)는 해석하지 않는다(review_required=True 고정).
 ⛔ dart_change.py·dart_table.py 는 수정하지 않는다(Track E 가 import).
@@ -28,7 +34,7 @@ import re
 from . import dart_change, dart_table
 from . import _synthetic
 
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 EFF_UNCONFIRMED = "확인 필요(효력일 미확정)"
 DATE_KEYS = ("effective", "rcept_dt", "early")
 DART_VIEW = _synthetic.DartView("https://dart.fss.or.kr/dsaf001/main.do?rcpNo={}")   # public build: synthetic rcept_no -> synthetic:// (never a real DART link)
@@ -235,7 +241,7 @@ def adjustments_for(chain: dict, adj_filings: list[dict]) -> list[dict]:
     return sorted(out, key=lambda x: x["rcept_no"])
 
 
-def version_effective(versions: list[dict], texts: dict, structured: dict | None = None) -> list[dict]:
+def version_effective(versions: list[dict], texts: dict, structured: dict | None = None, *, strict_new_resolution: bool = False) -> list[dict]:
     """버전마다 {key, lo, hi, basis, disclosed, board_dt}. key = 날짜 키, [lo, hi] = 공시만으로 가능한 효력일 구간(YYYYMMDD).
     structured = cvbdIsDecsn 레코드(rcept_no → {bddd,...}) — 있으면 그 결의일을 우선한다(구조화 필드 우선)."""
     out, prev = [], None
@@ -249,8 +255,13 @@ def version_effective(versions: list[dict], texts: dict, structured: dict | None
         if v.get("kind") != "correction" or prev is None:
             e = ({"key": bd, "lo": min(bd, r), "hi": max(bd, r), "basis": "board_resolution", "disclosed": True} if bd
                  else {"key": r, "lo": r, "hi": r, "basis": "rcept_dt_fallback", "disclosed": False})
-        elif bd and prev.get("board_dt") and bd != prev["board_dt"]:
+        elif bd and prev.get("board_dt") and bd != prev["board_dt"] and (not strict_new_resolution or (
+                bd > max(x["key"] for x in out) and bd not in {x.get("board_dt") for x in out})):
             e = {"key": bd, "lo": min(bd, r), "hi": max(bd, r), "basis": "new_board_resolution", "disclosed": True}
+        elif strict_new_resolution and bd and prev.get("board_dt") and bd != prev["board_dt"]:
+            # V4.2 수정(공개본 피드백 2): 정정에 원래(또는 앞선) 결의일이 적힌 경우 — 새 결의가 아니다. 새 결의로 보면 결의일 키가
+            # 앞 버전보다 앞서 정렬돼 이 정정 값이 빠진다. 기재 정정으로 다룬다(키 = 접수일, 가능 구간 [직전 하한, 접수일]).
+            e = {"key": r, "lo": prev["lo"], "hi": r, "basis": "restatement_earlier_resolution_date", "disclosed": False}
         else:   # 기재 정정 — 소급/장래 미확정
             e = {"key": r, "lo": prev["lo"], "hi": r, "basis": "restatement_same_resolution" if bd else "restatement_or_unknown", "disclosed": False}
         e |= {"board_dt": bd, "board_src": src, "date_key_fallback": not e["disclosed"]}
@@ -286,13 +297,14 @@ def _ambiguity(events: list[dict], T: str) -> list:
     return uniq
 
 
-def resolve(chain: dict, texts: dict, as_of: str, *, date_key: str = "effective", structured: dict | None = None) -> dict:
-    """체인 + 기준일 → 기준일 유효 조건. 원문이 없으면 core 값만(위치 None) 내고 extra/옵션은 미확인.
+def _resolve_v41(chain: dict, texts: dict, as_of: str, *, date_key: str = "effective", structured: dict | None = None,
+                 strict_new_resolution: bool = False) -> dict:
+    """[V4.1 해석기 핵심 — 동작 고정] 체인 + 기준일 → 기준일 유효 조건. 원문이 없으면 core 값만(위치 None) 내고 extra/옵션은 미확인.
     date_key: 'effective'(기본, R6) · 'rcept_dt'(V4.0 규칙 — 측정 기준선) · 'early'(기재 정정 소급 해석, 측정용)."""
     if date_key not in DATE_KEYS: raise ValueError(f"bad date_key: {date_key}")
     T = ymd(as_of)
     vs = chain["versions"]
-    effs = version_effective(vs, texts, structured)
+    effs = version_effective(vs, texts, structured, strict_new_resolution=strict_new_resolution)
     adjs = chain.get("adjustments") or []
     aeffs = _adj_effective(adjs, effs[0]["key"] if effs else None)
     kf = {"effective": "key", "early": "lo"}.get(date_key)
@@ -385,6 +397,117 @@ def resolve(chain: dict, texts: dict, as_of: str, *, date_key: str = "effective"
                    "dart_url": DART_VIEW.format(cur["rcept_no"]), "effective": effs[cur_i]},
                    "terms": terms, "review_required": any(t["review_required"] for t in terms.values()),
                    "unconfirmed_fields": [f for f, t in terms.items() if t["effective_status"] == "UNCONFIRMED_DEPENDS"]}
+
+
+# ── V4.2: 지식 시점(bitemporal) · 모드 · 조정 공시 수집 완전성(R9~R12) ─────────────────────────────────────
+MODES = ("restated", "as_known")
+ENGINES = ("4.2", "4.1")
+COV_UNVERIFIED = "EVENT_COVERAGE_UNVERIFIED"
+COV_KO = "확인 필요(조정 공시 수집 미검증)"
+VALUE_BASIS = "DISCLOSURE_BASED_ESTIMATE"
+VALUE_BASIS_KO = "공시 기반 추정치(계약상 효력일 미확인)"
+MODE_KO = {"restated": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)", "as_known": "당시 기준(지식 시점까지 공개된 사건만)"}
+COVERAGE_CHECKS = ("C1_LIST_OK", "C2_LIST_RANGE", "C3_ALL_PARSED_OR_UNMATCHED", "C4_SERIES_UNAMBIGUOUS", "C5_PRICE_CONTINUITY",
+                   "C6_CORRECTIONS_LINKED", "C7_NO_CONFLICT")
+
+
+def _next_day(d: str) -> str: return (_dt.date(int(d[:4]), int(d[4:6]), int(d[6:])) + _dt.timedelta(1)).strftime("%Y%m%d")
+
+
+def knowledge_view(chain: dict, cutoff: str | None) -> tuple[dict, dict]:
+    """지식 시점 cutoff(YYYYMMDD, None=제한 없음)까지 공개된 것만 남긴 체인 사본 + 가려진 목록.
+    버전 known_at = 접수일. 조정 사건 known_at = 원 조정 접수일, 정정 개정(revisions)은 그 정정 접수일부터 값이 바뀐다."""
+    vs = [v for v in chain["versions"] if cutoff is None or v["rcept_dt"] <= cutoff]
+    adjs, hid_a = [], []
+    for e in chain.get("adjustments") or []:
+        ka = e.get("known_at") or e["rcept_dt"]
+        if cutoff is not None and ka > cutoff: hid_a.append({"rcept_no": e["rcept_no"], "known_at": ka}); continue
+        cur = dict(e, value_known_at=ka, revised_by=None)
+        for rv in sorted(e.get("revisions") or [], key=lambda x: (x["known_at"], x["rcept_no"])):
+            if cutoff is None or rv["known_at"] <= cutoff:
+                cur.update(effective_dt=rv.get("effective_dt") or cur.get("effective_dt"), conversion_price_krw=rv["conversion_price_krw"],
+                           before_krw=rv.get("before_krw"), revised_by=rv["rcept_no"], value_known_at=rv["known_at"])
+        adjs.append(cur)
+    hid_v = [{"rcept_no": v["rcept_no"], "known_at": v["rcept_dt"], "kind": v["kind"]} for v in chain["versions"] if cutoff is not None and v["rcept_dt"] > cutoff]
+    return dict(chain, versions=vs, adjustments=sorted(adjs, key=lambda a: a["rcept_no"])), {"versions": hid_v, "adjustments": hid_a}
+
+
+def coverage_check(chain: dict, view: dict, res: dict, T: str, cutoff: str | None) -> dict:
+    """R11 — 전환가액 자동 확정 전 조정 공시 수집 완전성 검사 C1~C7. 실패 사유가 하나라도 있으면 UNVERIFIED."""
+    cov = chain.get("adjustment_coverage")
+    if not cov or cov.get("not_collected"):
+        why = (cov or {}).get("not_collected") or "ADJUSTMENTS_NOT_COLLECTED"
+        return {"status": COV_UNVERIFIED, "reasons": [f"C0_COLLECTED:{why}"], "passed": []}
+    end = cutoff or cov["collected_through"]; start = cov.get("chain_start") or "00000000"
+    fail = []
+    wins = sorted((w for w in cov.get("list_windows", []) if w["end"] >= start and w["bgn"] <= end), key=lambda w: w["bgn"])
+    if cov.get("fetch_error"): fail.append(f"C1_LIST_OK:{cov['fetch_error']}")
+    fail += [f"C1_LIST_OK:{w['bgn']}-{w['end']}:{w['status']}(pages {w['pages_got']}/{w['total_page']}, items {w['items_got']}/{w['total_count']})"
+             for w in wins if not w["ok"]]
+    cur = start
+    for w in wins:
+        if w["bgn"] > cur: fail.append(f"C2_LIST_RANGE:gap {cur}-{w['bgn']}"); break
+        cur = max(cur, _next_day(w["end"]))
+    if cur <= end: fail.append(f"C2_LIST_RANGE:not_covered {cur}-{end} (collected_through {cov['collected_through']})")
+    fail += [f"{p['check']}:{p['reason']}" + (f"@{p['rcept_no']}" if p.get("rcept_no") else "") for p in cov.get("problems", [])
+             if (p.get("known_at") or "00000000") <= end]
+    term = (res.get("terms") or {}).get("conversion_price_krw")
+    if term is not None:                                                                         # C5 — 다음 조정의 조정전 가액
+        key = lambda a: a.get("effective_dt") or a["rcept_dt"]
+        nxt = sorted((a for a in view.get("adjustments") or [] if key(a) > T), key=lambda a: (key(a), a["rcept_no"]))
+        if nxt:
+            n = nxt[0]; vals = [term["value"]] + list(term.get("alternative_values") or [])
+            if n.get("before_krw") is None: fail.append(f"C5_PRICE_CONTINUITY:before_unparsed@{n['rcept_no']}")
+            elif n["before_krw"] not in vals:
+                fail.append(f"C5_PRICE_CONTINUITY:next {n['rcept_no']}(적용 {key(n)}) 조정전 {n['before_krw']} ≠ 계산 {term['value']}")
+    failed = {f.split(":")[0] for f in fail}
+    return {"status": COV_UNVERIFIED if fail else "VERIFIED", "reasons": fail, "passed": [c for c in COVERAGE_CHECKS if c not in failed],
+            "knowledge_end": end, "chain_start": start, "collected_through": cov["collected_through"]}
+
+
+def resolve(chain: dict, texts: dict, as_of: str, *, date_key: str = "effective", structured: dict | None = None,
+            engine: str = "4.2", mode: str = "restated", knowledge_cutoff: str | None = None) -> dict:
+    """기준일 유효 조건. engine='4.1' = V4.1 그대로(date_key='rcept_dt' + 조정 없음 = V4.0).
+    engine='4.2'(기본): valuation_asof(=as_of) 와 knowledge_cutoff 를 나눈다.
+      mode='restated' — 지금(수집 종료일)까지 알려진 사건 전부를 효력일로 적용(knowledge_cutoff 를 받지 않는다).
+      mode='as_known' — known_at <= knowledge_cutoff(기본 = 기준일) 인 사건만.
+    전환가액은 조정 공시 수집 완전성(C1~C7)을 통과해야 자동 확정된다. 못 하면 EVENT_COVERAGE_UNVERIFIED(R11)."""
+    if engine not in ENGINES: raise ValueError(f"bad engine: {engine}")
+    if engine == "4.1":
+        return _resolve_v41(chain, texts, as_of, date_key=date_key, structured=structured) | {"engine": "4.1"}
+    if mode not in MODES: raise ValueError(f"bad mode: {mode}")
+    T = ymd(as_of)
+    cov = chain.get("adjustment_coverage")
+    if mode == "restated":
+        if knowledge_cutoff: raise ValueError("restated 모드는 knowledge_cutoff 를 받지 않는다(수집 종료일까지 알려진 사건 전부)")
+        cutoff = (cov or {}).get("collected_through")
+    else:
+        cutoff = ymd(knowledge_cutoff) if knowledge_cutoff else T
+    view, hidden = knowledge_view(chain, cutoff)
+    r = _resolve_v41(view, texts, T, date_key=date_key, structured=structured, strict_new_resolution=True)
+    cc = coverage_check(chain, view, r, T, cutoff)
+    stamp = {"mode": mode, "mode_ko": MODE_KO[mode], "valuation_asof": iso(T), "knowledge_cutoff": iso(cutoff) if cutoff else None}
+    ev_by = {a["rcept_no"]: a for a in view.get("adjustments") or []}
+    for f, t in (r.get("terms") or {}).items():
+        t |= stamp
+        if t.get("contract_effective_confirmed") is False: t |= {"value_basis": VALUE_BASIS, "value_basis_ko": VALUE_BASIS_KO}
+        if t.get("adjusted_by") and t["adjusted_by"]["rcept_no"] in ev_by:                           # R10 — 사건 출처·시간축
+            e = ev_by[t["adjusted_by"]["rcept_no"]]
+            t["adjusted_by"] |= {k: e.get(k) for k in ("report_nm", "known_at", "effective_at", "effective_fallback", "value_known_at", "revised_by",
+                                                        "series_evidence", "sources", "revisions", "format")}
+            t["adjusted_by"]["bitemporal"] = {"rcept_dt": e["rcept_dt"], "effective_at": e.get("effective_at") or e.get("effective_dt") or e["rcept_dt"],
+                                              "known_at": e.get("value_known_at") or e.get("known_at") or e["rcept_dt"]}
+        if f == "conversion_price_krw":
+            t["event_coverage"] = cc
+            if cc["status"] == COV_UNVERIFIED:
+                t |= {"coverage_status": COV_UNVERIFIED, "auto_verdict_allowed": False, "approval_required": True, "review_required": True,
+                      "status_ko": COV_KO if t.get("effective_status") != "UNCONFIRMED_DEPENDS" else f"{t['status_ko']} · {COV_KO}"}
+            else: t["coverage_status"] = "VERIFIED"
+    unv = [f for f, t in (r.get("terms") or {}).items() if t.get("coverage_status") == COV_UNVERIFIED]
+    if unv: r["review_required"] = True
+    return r | stamp | {"engine": "4.2", "event_coverage": cc, "coverage_unverified_fields": unv, "unknown_at_cutoff": hidden,
+                        "values_are": VALUE_BASIS, "values_are_ko": VALUE_BASIS_KO,
+                        "adjustments_used": len(view.get("adjustments") or []), "versions_known": len(view["versions"])}
 
 
 def find_chain(chains: dict, corp: str | None, cb: str) -> dict:

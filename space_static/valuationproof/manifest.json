@@ -2,6 +2,7 @@
  "__init__.py",
  "_norm.py",
  "_synthetic.py",
+ "adjust_events.py",
  "asof_terms.py",
  "audit_v4.py",
  "change_v3.py",
@@ -13,6 +14,6 @@
  "excel_v3.py",
  "ledger.py",
  "rcps.py",
- "schemas/rcps_terms_input.schema.json",
- "synthetic.py"
+ "synthetic.py",
+ "schemas/rcps_terms_input.schema.json"
 ]

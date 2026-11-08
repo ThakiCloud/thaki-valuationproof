@@ -52,7 +52,7 @@ def _sheet(ws, as_of: str, series: str, vals: dict, labels: dict | None = None):
 def build(chain: dict, texts: dict, out: Path, as_of: str) -> list[dict]:
     import openpyxl
     out.mkdir(parents=True, exist_ok=True)
-    res = asof_terms.resolve(chain, texts, as_of); sel = res["selected_version"]["index"]; ser = chain["series"]
+    res = asof_terms.resolve(chain, texts, as_of, engine="4.1"); sel = res["selected_version"]["index"]; ser = chain["series"]
     cur = {f: t["value"] for f, t in res["terms"].items()}
     cases = []
     # 1 정상
@@ -107,7 +107,7 @@ def check(case: dict, r: dict) -> bool:
 def run(chain: dict, texts: dict, out: str | Path, as_of: str | None = None, data_kind: str = "") -> dict:
     out = Path(out); as_of = as_of or pick_asof(chain); rows = []
     for c in build(chain, texts, out, as_of):
-        r = audit_v4.audit(c["file"], chain, texts, as_of)
+        r = audit_v4.audit(c["file"], chain, texts, as_of, engine="4.1")   # 합성 데모 = V4.1 엔진(조정 공시 수집 없음)
         r["data_kind"] = data_kind or "공개 공시(OpenDART) 체인 + 합성 Excel(SYNTH_*)"
         if chain.get("synthetic"):   # public build: never label a synthetic chain as a public disclosure
             r["claim_boundary"] = "[합성 데이터 — 가상 발행사·가상 공시] " + str(r.get("claim_boundary", "")).replace("공개 공시(OpenDART) 기준", "합성 공시 체인 기준")

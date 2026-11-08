@@ -15,6 +15,18 @@ Chain (issuer "가상정밀 주식회사 / Example Precision Co. [SYNTHETIC]", s
 The default demo valuation date (as-of) is 2025-10-01: C3 is excluded, C2 is applied, nothing depends on an unconfirmed
 effective date. At as-of 2025-06-18 (after C1's board date, before C1 was filed) the conversion price depends on the
 unconfirmed effective date and must come out as '확인 필요(효력일 미확정)' (see EFFECTIVE_DATE_ASOF).
+
+V4.2 adds two SYNTHETIC conversion-price adjustment filings (전환가액의조정) for the same fictional series:
+  A1  filed 2025-11-21  adjustment effective (조정가액 적용일) 2025-11-20   8,500 -> 7,800
+  A1' filed 2025-12-05  [기재정정] of A1 (same series, same effective date)  8,500 -> 7,750
+They are served by ``fetch`` (an in-memory stand-in for OpenDART list.json / document.xml — no network, no key) so the
+real collector ``adjust_events.collect_corp`` runs unchanged. effective_at (2025-11-20) is earlier than known_at
+(2025-11-21 / 2025-12-05), so the two V4.2 modes differ:
+  restated (everything known by COLLECT_END)        as-of 2025-11-20 -> 7,750 (A1 as corrected by A1')
+  as_known, knowledge cutoff = as-of 2025-11-20     -> 8,500 (A1 not yet published)
+  as_known, knowledge cutoff 2025-11-30             -> 7,800 (A1 published, correction not yet)
+``load_v42(fail=...)`` simulates a broken collection (``"list_page"`` = list request error -> C1, ``"off"`` = not collected
+-> C0); the conversion price then comes out as EVENT_COVERAGE_UNVERIFIED and is never auto-judged.
 """
 from __future__ import annotations
 
@@ -106,3 +118,80 @@ def load() -> tuple[dict, dict]:
     ch.setdefault("series", dart_change.series(tx[ch["origin"]]) or SERIES)
     ch["synthetic"] = True
     return ch, tx
+
+
+# ── V4.2: synthetic conversion-price adjustment filings + in-memory OpenDART stand-in ─────────────────────────────
+ADJUSTMENTS = [
+    # rcept_no (made up), rcept_dt, report_nm, 조정가액 적용일, before, after, reason
+    ("20251121990005", "20251121", "전환가액의조정 [SYNTHETIC]", "2025년 11월 20일", "8,500", "7,800", "시가하락에 따른 조정(가상)"),
+    ("20251205990006", "20251205", "[기재정정]전환가액의조정 [SYNTHETIC]", "2025년 11월 20일", "8,500", "7,750", "조정후 가액 기재 오류 정정(가상)"),
+]
+V42_ASOF = "2025-11-20"          # adjustment effective date — the modes disagree here
+COLLECT_END = "2026-01-31"       # 'restated' = everything published up to this date
+
+
+def adjustment_text(i: int) -> str:
+    rno, rdt, nm, eff, before, after, reason = ADJUSTMENTS[i]
+    cells = [nm, ISSUER, BANNER, "1. 조정에 관한 사항", "회차", "상장여부", "조정전 전환가액 (원)", "조정후 전환가액 (원)",
+             SERIES, "비상장", before, after, "2. 전환가능 주식수 변동", "(가상)", "3. 조정사유", reason,
+             "4. 근거 및 방법", "(가상) 사채 발행조건상 시가하락 조정 조항", "5. 조정가액 적용일", eff, "6. 이사회결의일(결정일)", "-"]
+    return "\n".join(c + " |" for c in cells) + "\n"
+
+
+def _listing() -> list[dict]:
+    rows = [{"rcept_no": r, "rcept_dt": d, "corp_code": CORP, "report_nm": m["report_nm"]} for (r, d, *_x), m in zip(VERSIONS, meta())]
+    rows += [{"rcept_no": a[0], "rcept_dt": a[1], "corp_code": CORP, "report_nm": a[2]} for a in ADJUSTMENTS]
+    rows.append({"rcept_no": "20251114990007", "rcept_dt": "20251114", "corp_code": CORP, "report_nm": "분기보고서 [SYNTHETIC]"})   # not an adjustment
+    return rows
+
+
+def _zip_xml(text: str) -> bytes:
+    import io, zipfile
+    body = "".join(f"<TR><TD>{c.rstrip(' |')}</TD></TR>" for c in text.splitlines() if c.strip())
+    b = io.BytesIO()
+    with zipfile.ZipFile(b, "w") as z: z.writestr("synthetic.xml", f"<DOCUMENT><TABLE>{body}</TABLE></DOCUMENT>".encode("utf-8"))
+    return b.getvalue()
+
+
+class SyntheticDart:
+    """In-memory stand-in for OpenDART list.json / document.xml (same call signature as dart_source._call). Never touches the network.
+    fail='list_page' makes every list request fail (-> C1_LIST_OK). calls records what was asked."""
+
+    def __init__(self, fail: str | None = None, page_size: int = 3):
+        self.fail, self.ps, self.calls = fail, page_size, []
+
+    def __call__(self, ep: str, raw: bool = False, **q):
+        self.calls.append(ep)
+        if ep == "document.xml":
+            adj = {a[0]: i for i, a in enumerate(ADJUSTMENTS)}
+            r = q["rcept_no"]
+            return _zip_xml(adjustment_text(adj[r]) if r in adj else texts()[r])
+        if ep != "list.json" or q.get("corp_code") != CORP: return {"status": "013"}
+        if self.fail == "list_page": raise ConnectionError("synthetic list failure")
+        items = sorted((x for x in _listing() if q["bgn_de"] <= x["rcept_dt"] <= q["end_de"]), key=lambda x: x["rcept_no"])
+        if not items: return {"status": "013"}
+        pages = [items[i:i + self.ps] for i in range(0, len(items), self.ps)]
+        return {"status": "000", "total_page": len(pages), "total_count": len(items), "list": pages[int(q["page_no"]) - 1]}
+
+
+fetch = SyntheticDart()
+
+
+def load_v42(cache_dir: str | Path | None = None, fail: str | None = None) -> tuple[dict, dict]:
+    """(chain with V4.2 adjustment events + collection record, texts). Collection runs the real adjust_events.collect_corp
+    against the in-memory SyntheticDart. fail: None | 'list_page' (C1 failure) | 'off' (not collected, C0)."""
+    ch, tx = load()
+    return collect_v42(ch, cache_dir, fail), tx
+
+
+def collect_v42(ch: dict, cache_dir: str | Path | None = None, fail: str | None = None) -> dict:
+    """Attach the V4.2 synthetic collection to a synthetic chain (e.g. one loaded from the exported synthetic fixture)."""
+    import tempfile
+    from . import adjust_events
+    _synthetic.register(a[0] for a in ADJUSTMENTS); _synthetic.register(["20251114990007"])
+    if fail == "off": return adjust_events.not_collected(ch, "ADJUSTMENTS_OFF(--adjustments off)")
+    cd = Path(cache_dir) if cache_dir else Path(tempfile.mkdtemp(prefix="vp_synth_adj_"))
+    rec = adjust_events.collect_corp(CORP, adjust_events.chain_start(ch), COLLECT_END, cd, SyntheticDart(fail=fail), sleep=0)
+    out = adjust_events.attach(ch, rec, adjust_events.series_counts([ch]))
+    out["synthetic"] = True
+    return out

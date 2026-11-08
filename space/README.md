@@ -23,12 +23,13 @@ Offline demo of [ThakiCloud/thaki-valuationproof](https://github.com/ThakiCloud/
 - Findings are **candidates for human review** (`approval_status = PENDING`). No auto-fix, no fair-value calculation.
 - Live DART mode exists only in the CLI and needs **your own** OpenDART key (`API_K_DART`); it is not enabled here.
 
-**Limits (this is the fixed V4.1 release):**
-- Conversion-price adjustment (전환가액조정) filings are **not auto-collected**; they are applied only if you supply them (`chain["adjustments"]`).
-- It does **not** claim to fully audit every term of real DART filings.
-- "0 silent errors" holds **only within the measured sample and the two interpretations (IA/IB)**. It is not 100% accuracy: uncertain terms were routed to `확인 필요` (needs review).
-- The cost: **24.3%** of quarter-end cases (138/567) need human review.
-- **Not evaluated on real accountant workbooks.**
-- V4.2 (adjustment auto-collection, bitemporal history) is **in development (roadmap)** and not part of this release.
+**Limits (V4.2 — an improved disclosure-based audit engine, not a commercially validated product):**
+- Values are **disclosure-based estimates**: contract effective dates are not confirmed (`contract_effective_confirmed = false`).
+- It does **not** claim to fully audit every term of real DART filings, and it does not compute fair value.
+- "0 silent errors" holds **only within the evaluated public-disclosure sample (60 issuers, 102 chains) and the two interpretations (IA/IB)**.
+  It is not 100% accuracy, and the reference values come from the same collected filings (not independent ground truth).
+- The cost: **35.3%** of quarter-end (chain × quarter-end) pairs (200/567) need human review.
+- Correction tables of adjustment filings ([기재정정] before/after tables) are not parsed yet (check C6).
+- **Error-detection performance on real customer valuation workbooks is not validated.**
 
 See the GitHub README for the "Validated / Not validated" scope.

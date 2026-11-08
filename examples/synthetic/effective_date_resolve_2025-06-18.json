@@ -1,6 +1,6 @@
 {
  "tool": "terms.resolve_asof",
- "version": "4.1.0",
+ "version": "4.2.0",
  "chain_origin": "20250314990001",
  "corp_code": "SYNTH001",
  "series": "1",
@@ -86,7 +86,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "coupon_rate_pct": {
    "field": "coupon_rate_pct",
@@ -127,7 +133,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "redemption_yield_pct": {
    "field": "redemption_yield_pct",
@@ -187,7 +199,13 @@
      "rcept_dt": "20260115",
      "value": "4.5"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "maturity_date": {
    "field": "maturity_date",
@@ -247,7 +265,13 @@
      "rcept_dt": "20260115",
      "value": "2028-09-30"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_price_krw": {
    "field": "conversion_price_krw",
@@ -295,7 +319,30 @@
    ],
    "auto_verdict_allowed": false,
    "approval_required": true,
-   "review_required": true
+   "review_required": true,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)",
+   "event_coverage": {
+    "status": "VERIFIED",
+    "reasons": [],
+    "passed": [
+     "C1_LIST_OK",
+     "C2_LIST_RANGE",
+     "C3_ALL_PARSED_OR_UNMATCHED",
+     "C4_SERIES_UNAMBIGUOUS",
+     "C5_PRICE_CONTINUITY",
+     "C6_CORRECTIONS_LINKED",
+     "C7_NO_CONFLICT"
+    ],
+    "knowledge_end": "20260131",
+    "chain_start": "20250211",
+    "collected_through": "20260131"
+   },
+   "coverage_status": "VERIFIED"
   },
   "refixing_floor_krw": {
    "field": "refixing_floor_krw",
@@ -343,7 +390,13 @@
      "rcept_dt": "20260115",
      "value": "6000"
     }
-   ]
+   ],
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "issue_date": {
    "field": "issue_date",
@@ -384,7 +437,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_start_date": {
    "field": "conversion_start_date",
@@ -425,7 +484,13 @@
     "date_key_fallback": false
    },
    "effective_status": "NOT_DEPENDENT",
-   "review_required": false
+   "review_required": false,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "conversion_end_date": {
    "field": "conversion_end_date",
@@ -473,7 +538,13 @@
    ],
    "auto_verdict_allowed": false,
    "approval_required": true,
-   "review_required": true
+   "review_required": true,
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "put_option": {
    "field": "put_option",
@@ -520,7 +591,13 @@
    "effective_status": "NOT_DEPENDENT",
    "option_status": "keyword_found",
    "review_required": true,
-   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인",
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   },
   "call_option": {
    "field": "call_option",
@@ -567,7 +644,13 @@
    "effective_status": "NOT_DEPENDENT",
    "option_status": "keyword_found",
    "review_required": true,
-   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인",
+   "mode": "restated",
+   "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+   "valuation_asof": "2025-06-18",
+   "knowledge_cutoff": "2026-01-31",
+   "value_basis": "DISCLOSURE_BASED_ESTIMATE",
+   "value_basis_ko": "공시 기반 추정치(계약상 효력일 미확인)"
   }
  },
  "review_required": true,
@@ -576,5 +659,35 @@
   "maturity_date",
   "conversion_price_krw",
   "conversion_end_date"
- ]
+ ],
+ "mode": "restated",
+ "mode_ko": "사후 재작성(지금 알려진 사건 전부를 효력일 기준으로 적용)",
+ "valuation_asof": "2025-06-18",
+ "knowledge_cutoff": "2026-01-31",
+ "engine": "4.2",
+ "event_coverage": {
+  "status": "VERIFIED",
+  "reasons": [],
+  "passed": [
+   "C1_LIST_OK",
+   "C2_LIST_RANGE",
+   "C3_ALL_PARSED_OR_UNMATCHED",
+   "C4_SERIES_UNAMBIGUOUS",
+   "C5_PRICE_CONTINUITY",
+   "C6_CORRECTIONS_LINKED",
+   "C7_NO_CONFLICT"
+  ],
+  "knowledge_end": "20260131",
+  "chain_start": "20250211",
+  "collected_through": "20260131"
+ },
+ "coverage_unverified_fields": [],
+ "unknown_at_cutoff": {
+  "versions": [],
+  "adjustments": []
+ },
+ "values_are": "DISCLOSURE_BASED_ESTIMATE",
+ "values_are_ko": "공시 기반 추정치(계약상 효력일 미확인)",
+ "adjustments_used": 1,
+ "versions_known": 4
 }
