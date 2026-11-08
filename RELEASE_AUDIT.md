@@ -1,12 +1,12 @@
 # Release audit — thaki-valuationproof
 
-점검일 2026-11-08 · 원본 커밋 `800a60149e0c44b6d279c08187c7928c0dcb374b` (ThakiCloud 비공개 저장소, sha 만 기록) · 결과: **BLOCK: internal_paths**
+점검일 2026-11-08 · 원본 커밋 `800a60149e0c44b6d279c08187c7928c0dcb374b` (ThakiCloud 비공개 저장소, sha 만 기록) · 결과: **PASS**
 
 이 파일은 공개 전에 돌린 점검의 기록입니다. 점검 스크립트는 내부 경로를 참조하므로 레포에 넣지 않았고, 결과만 옮깁니다.
 
 ## 1. 테스트
 
-`pytest -q` → `60 passed in 0.55s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
+`pytest -q` → `60 passed in 0.58s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
 
 ## 2. 공개 표면 게이트 (release guard)
 
@@ -29,13 +29,13 @@
   - WARN · org-repo · `space/README.md` · ThakiCloud/thaki-valuationproof
   - WARN · company-name · `space/app.py` · ThakiCloud
   - WARN · org-repo · `space/app.py` · ThakiCloud/thaki-valuationproof
-  - WARN · history:company-name · `git history` · 내용 49건
+  - WARN · history:company-name · `git history` · 내용 70건
 
 ## 3. 시크릿·내부 정보 스캔 (트리 + xlsx 내부 XML + git 히스토리(시크릿 값))
 
 | 항목 | 건수 |
 |---|---|
-| `internal_paths` | 3 |
+| `internal_paths` | 0 |
 | `s3_buckets` | 0 |
 | `cluster` | 0 |
 | `project_uuid` | 0 |
@@ -53,9 +53,6 @@
 - `exact_value_*`: 로컬에 있는 OpenDART 키·HF 토큰 **값 자체**를 트리·xlsx·히스토리에서 찾은 결과(값은 출력하지 않음). 0 이어야 통과.
 - `real_rcept_14digit`: 14자리 접수번호 형태 숫자. 해당 위치는 **단위 테스트의 임의 식별자**(`2025010100000N` 류, 합성 원문과 짝)뿐이며 실제 공시 내용과 무관합니다.
   공개 데모·예시 보고서의 접수번호는 `YYYYMMDD99NNNN` 형태의 가상 번호이고 `synthetic://` 로만 표시됩니다.
-  ./RELEASE_AUDIT.md:56:  ./RELEASE_AUDIT.md:56:  ./space_static/index.html:65:    py.FS.mkdirTree("/home/pyodide/valuationproof/schemas");
-  ./RELEASE_AUDIT.md:57:  ./RELEASE_AUDIT.md:57:  ./space_static/index.html:66:    for(const f of files){const t=await (await fetch("valuationproof/"+f)).text();
-  ./RELEASE_AUDIT.md:58:  ./RELEASE_AUDIT.md:58:  ./space_static/index.html:76:sys.path.insert(0, "/home/pyodide")
   ./tests/test_public_synthetic.py:37:    assert asof_terms.DART_VIEW.format("20250101000001").startswith("https://dart.fss.or.kr/")   # unregistered -> normal li
   ./tests/test_v41_effective_date.py:19:    vs = [("20250101000001", "20250101", "original", vals(), bform(o_bd) if board else form()),
   ./tests/test_v41_effective_date.py:20:          ("20250301000002", "20250301", "correction", vals(cp="900"), bform(c_bd, cp="900") if board else form(cp="900"))
