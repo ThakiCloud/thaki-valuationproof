@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+vp_demo/
+vp_audit_out/
+# never commit real DART data or keys
+dart_data/
+.env

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "valuationproof"
+version = "0.4.0"
+description = "As-of convertible-bond terms from Korean DART disclosure/correction chains vs. valuation workbooks -> evidence reports for human review"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [{name = "ThakiCloud"}]
+requires-python = ">=3.10"
+dependencies = ["openpyxl>=3.1"]
+classifiers = ["License :: OSI Approved :: Apache Software License", "Programming Language :: Python :: 3", "Natural Language :: Korean"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.4"]
+demo = ["gradio>=4.44"]
+
+[project.urls]
+Homepage = "https://github.com/ThakiCloud/thaki-valuationproof"
+Demo = "https://huggingface.co/spaces/ThakiCloud/ValuationProof-Demo"
+
+[project.scripts]
+valuationproof = "valuationproof.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+valuationproof = ["schemas/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
+addopts = "-q"

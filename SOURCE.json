@@ -1,0 +1,37 @@
+{
+ "extracted_from": "ThakiCloud internal repository (private)",
+ "source_commit_sha": "800a60149e0c44b6d279c08187c7928c0dcb374b",
+ "modules": [
+  "asof_terms",
+  "audit_v4",
+  "change_v3",
+  "dart_change",
+  "dart_source",
+  "dart_table",
+  "demo_v4",
+  "excel_v3",
+  "ledger",
+  "rcps"
+ ],
+ "tests": [
+  "test_v4_asof",
+  "test_v4_audit",
+  "test_v4_rcps",
+  "test_dart_table",
+  "test_v3_change",
+  "test_v3_excel",
+  "test_v41_effective_date"
+ ],
+ "auto_added_modules": [],
+ "public_build_changes": {
+  "asof_terms.py": "DART link builder renders receipt numbers registered as synthetic as synthetic://<no> (never a dart.fss.or.kr link)",
+  "audit_v4.py": "HTML report colour map gains the 4.1 class '확인 필요(효력일 미확정)' (upstream KeyError when that class occurs in an HTML report)",
+  "dart_source.py": "value normaliser imported from valuationproof._norm instead of an internal integration module",
+  "rcps.py": "RCPS input schema path moved inside the package (valuationproof/schemas/)",
+  "dart_change.py": "a code comment that cited a specific real receipt number replaced with a generic example",
+  "demo_v4.py": "reports built from the synthetic chain are labelled synthetic (never 'public disclosure')",
+  "test_v3_change.py": "same normaliser import change as dart_source.py",
+  "cli.py": "rewritten for the public build: only demo / resolve / audit / synthetic-dataset / rcps-check (internal training & data-adapter commands removed)",
+  "synthetic.py, _synthetic.py, _norm.py, tests/test_public_synthetic.py": "new in the public build"
+ }
+}

@@ -1,0 +1,671 @@
+{
+ "kind": "valuationproof.chain_fixture",
+ "version": "4.1.0",
+ "source": "OpenDART 공개 공시(전환사채권발행결정·기재정정)",
+ "note": "SYNTHETIC — fictional issuer, made-up filings",
+ "origin": "20250314990001",
+ "corp_code": "SYNTH001",
+ "series": "1",
+ "versions": [
+  {
+   "rcept_no": "20250314990001",
+   "rcept_dt": "20250314",
+   "kind": "original",
+   "values": {
+    "principal_krw": "3000000000",
+    "coupon_rate_pct": "1.0",
+    "redemption_yield_pct": "4.0",
+    "maturity_date": "2028-03-31",
+    "conversion_price_krw": "10000",
+    "refixing_floor_krw": "7000",
+    "issue_date": "2025-03-31"
+   },
+   "link_method": "origin",
+   "link_status": null,
+   "changed_items": null,
+   "doc_sha256": "29b79fc010e3d8bd4160dcf294977ec38d0a1c80b697a5cd621f8a1f60f37077",
+   "terms_cache": {
+    "principal_krw": {
+     "value": "3000000000",
+     "locator": {
+      "label": "2. 사채의 권면(전자등록)총액 (원)",
+      "raw": "3,000,000,000",
+      "line": 10,
+      "char_start": 269,
+      "char_end": 282,
+      "label_line": 9,
+      "rule": "dart_table.LABELS[principal_krw]"
+     }
+    },
+    "coupon_rate_pct": {
+     "value": "1.0",
+     "locator": {
+      "label": "표면이자율 (%)",
+      "raw": "1.0",
+      "line": 13,
+      "char_start": 309,
+      "char_end": 312,
+      "label_line": 12,
+      "rule": "dart_table.LABELS[coupon_rate_pct]"
+     }
+    },
+    "redemption_yield_pct": {
+     "value": "4.0",
+     "locator": {
+      "label": "만기이자율 (%)",
+      "raw": "4.0",
+      "line": 15,
+      "char_start": 327,
+      "char_end": 330,
+      "label_line": 14,
+      "rule": "dart_table.LABELS[redemption_yield_pct]"
+     }
+    },
+    "maturity_date": {
+     "value": "2028-03-31",
+     "locator": {
+      "label": "5. 사채만기일",
+      "raw": "2028년 03월 31일",
+      "line": 17,
+      "char_start": 344,
+      "char_end": 357,
+      "label_line": 16,
+      "rule": "dart_table.LABELS[maturity_date]"
+     }
+    },
+    "conversion_price_krw": {
+     "value": "10000",
+     "locator": {
+      "label": "전환가액 (원/주)",
+      "raw": "10,000",
+      "line": 24,
+      "char_start": 422,
+      "char_end": 428,
+      "label_line": 23,
+      "rule": "dart_table.LABELS[conversion_price_krw]"
+     }
+    },
+    "refixing_floor_krw": {
+     "value": "7000",
+     "locator": {
+      "label": "최저 조정가액 (원)",
+      "raw": "7,000",
+      "line": 32,
+      "char_start": 514,
+      "char_end": 519,
+      "label_line": 31,
+      "rule": "dart_table.LABELS[refixing_floor_krw]"
+     }
+    },
+    "issue_date": {
+     "value": "2025-03-31",
+     "locator": {
+      "label": "12. 납입일",
+      "raw": "2025년 03월 31일",
+      "line": 37,
+      "char_start": 700,
+      "char_end": 713,
+      "label_line": 36,
+      "rule": "dart_table.LABELS[issue_date]"
+     }
+    },
+    "conversion_start_date": {
+     "value": "2026-03-31",
+     "locator": {
+      "label": "전환청구기간/시작일",
+      "raw": "2026년 03월 31일",
+      "value": "2026-03-31",
+      "line": 27,
+      "char_start": 446,
+      "char_end": 459,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "conversion_end_date": {
+     "value": "2028-02-29",
+     "locator": {
+      "label": "전환청구기간/종료일",
+      "raw": "2028년 02월 29일",
+      "value": "2028-02-29",
+      "line": 29,
+      "char_start": 468,
+      "char_end": 481,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "put_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-09-30"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "조기상환청구권",
+      "first_date_candidate": "2026-09-30",
+      "line": 34,
+      "char_start": 544,
+      "char_end": 551,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    },
+    "call_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-03-31"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "매도청구권",
+      "first_date_candidate": "2026-03-31",
+      "line": 35,
+      "char_start": 625,
+      "char_end": 630,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    }
+   }
+  },
+  {
+   "rcept_no": "20250620990002",
+   "rcept_dt": "20250620",
+   "kind": "correction",
+   "values": {
+    "principal_krw": "3000000000",
+    "coupon_rate_pct": "1.0",
+    "redemption_yield_pct": "4.0",
+    "maturity_date": "2028-03-31",
+    "conversion_price_krw": "8500",
+    "refixing_floor_krw": "7000",
+    "issue_date": "2025-03-31"
+   },
+   "link_method": "v2_rule",
+   "link_status": null,
+   "changed_items": [
+    "3. 정정사항",
+    "9. 전환에 관한 사항"
+   ],
+   "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+   "terms_cache": {
+    "principal_krw": {
+     "value": "3000000000",
+     "locator": {
+      "label": "2. 사채의 권면(전자등록)총액 (원)",
+      "raw": "3,000,000,000",
+      "line": 25,
+      "char_start": 489,
+      "char_end": 502,
+      "label_line": 24,
+      "rule": "dart_table.LABELS[principal_krw]"
+     }
+    },
+    "coupon_rate_pct": {
+     "value": "1.0",
+     "locator": {
+      "label": "표면이자율 (%)",
+      "raw": "1.0",
+      "line": 28,
+      "char_start": 529,
+      "char_end": 532,
+      "label_line": 27,
+      "rule": "dart_table.LABELS[coupon_rate_pct]"
+     }
+    },
+    "redemption_yield_pct": {
+     "value": "4.0",
+     "locator": {
+      "label": "만기이자율 (%)",
+      "raw": "4.0",
+      "line": 30,
+      "char_start": 547,
+      "char_end": 550,
+      "label_line": 29,
+      "rule": "dart_table.LABELS[redemption_yield_pct]"
+     }
+    },
+    "maturity_date": {
+     "value": "2028-03-31",
+     "locator": {
+      "label": "5. 사채만기일",
+      "raw": "2028년 03월 31일",
+      "line": 32,
+      "char_start": 564,
+      "char_end": 577,
+      "label_line": 31,
+      "rule": "dart_table.LABELS[maturity_date]"
+     }
+    },
+    "conversion_price_krw": {
+     "value": "8500",
+     "locator": {
+      "label": "전환가액 (원/주)",
+      "raw": "8,500",
+      "line": 39,
+      "char_start": 642,
+      "char_end": 647,
+      "label_line": 38,
+      "rule": "dart_table.LABELS[conversion_price_krw]"
+     }
+    },
+    "refixing_floor_krw": {
+     "value": "7000",
+     "locator": {
+      "label": "최저 조정가액 (원)",
+      "raw": "7,000",
+      "line": 47,
+      "char_start": 733,
+      "char_end": 738,
+      "label_line": 46,
+      "rule": "dart_table.LABELS[refixing_floor_krw]"
+     }
+    },
+    "issue_date": {
+     "value": "2025-03-31",
+     "locator": {
+      "label": "12. 납입일",
+      "raw": "2025년 03월 31일",
+      "line": 52,
+      "char_start": 919,
+      "char_end": 932,
+      "label_line": 51,
+      "rule": "dart_table.LABELS[issue_date]"
+     }
+    },
+    "conversion_start_date": {
+     "value": "2026-03-31",
+     "locator": {
+      "label": "전환청구기간/시작일",
+      "raw": "2026년 03월 31일",
+      "value": "2026-03-31",
+      "line": 42,
+      "char_start": 665,
+      "char_end": 678,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "conversion_end_date": {
+     "value": "2028-02-29",
+     "locator": {
+      "label": "전환청구기간/종료일",
+      "raw": "2028년 02월 29일",
+      "value": "2028-02-29",
+      "line": 44,
+      "char_start": 687,
+      "char_end": 700,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "put_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-09-30"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "조기상환청구권",
+      "first_date_candidate": "2026-09-30",
+      "line": 49,
+      "char_start": 763,
+      "char_end": 770,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    },
+    "call_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-03-31"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "매도청구권",
+      "first_date_candidate": "2026-03-31",
+      "line": 50,
+      "char_start": 844,
+      "char_end": 849,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    }
+   }
+  },
+  {
+   "rcept_no": "20250930990003",
+   "rcept_dt": "20250930",
+   "kind": "correction",
+   "values": {
+    "principal_krw": "3000000000",
+    "coupon_rate_pct": "1.0",
+    "redemption_yield_pct": "4.5",
+    "maturity_date": "2028-09-30",
+    "conversion_price_krw": "8500",
+    "refixing_floor_krw": "7000",
+    "issue_date": "2025-03-31"
+   },
+   "link_method": "v2_rule",
+   "link_status": null,
+   "changed_items": [
+    "3. 정정사항",
+    "4. 사채의 이율",
+    "5. 사채만기일",
+    "9. 전환에 관한 사항"
+   ],
+   "doc_sha256": "85c5f9b4f1a4b1e206be0047c248c5b6406adab3c1660df8cb10914f1f9e0b7d",
+   "terms_cache": {
+    "principal_krw": {
+     "value": "3000000000",
+     "locator": {
+      "label": "2. 사채의 권면(전자등록)총액 (원)",
+      "raw": "3,000,000,000",
+      "line": 33,
+      "char_start": 653,
+      "char_end": 666,
+      "label_line": 32,
+      "rule": "dart_table.LABELS[principal_krw]"
+     }
+    },
+    "coupon_rate_pct": {
+     "value": "1.0",
+     "locator": {
+      "label": "표면이자율 (%)",
+      "raw": "1.0",
+      "line": 36,
+      "char_start": 693,
+      "char_end": 696,
+      "label_line": 35,
+      "rule": "dart_table.LABELS[coupon_rate_pct]"
+     }
+    },
+    "redemption_yield_pct": {
+     "value": "4.5",
+     "locator": {
+      "label": "만기이자율 (%)",
+      "raw": "4.5",
+      "line": 38,
+      "char_start": 711,
+      "char_end": 714,
+      "label_line": 37,
+      "rule": "dart_table.LABELS[redemption_yield_pct]"
+     }
+    },
+    "maturity_date": {
+     "value": "2028-09-30",
+     "locator": {
+      "label": "5. 사채만기일",
+      "raw": "2028년 09월 30일",
+      "line": 40,
+      "char_start": 728,
+      "char_end": 741,
+      "label_line": 39,
+      "rule": "dart_table.LABELS[maturity_date]"
+     }
+    },
+    "conversion_price_krw": {
+     "value": "8500",
+     "locator": {
+      "label": "전환가액 (원/주)",
+      "raw": "8,500",
+      "line": 47,
+      "char_start": 806,
+      "char_end": 811,
+      "label_line": 46,
+      "rule": "dart_table.LABELS[conversion_price_krw]"
+     }
+    },
+    "refixing_floor_krw": {
+     "value": "7000",
+     "locator": {
+      "label": "최저 조정가액 (원)",
+      "raw": "7,000",
+      "line": 55,
+      "char_start": 897,
+      "char_end": 902,
+      "label_line": 54,
+      "rule": "dart_table.LABELS[refixing_floor_krw]"
+     }
+    },
+    "issue_date": {
+     "value": "2025-03-31",
+     "locator": {
+      "label": "12. 납입일",
+      "raw": "2025년 03월 31일",
+      "line": 60,
+      "char_start": 1083,
+      "char_end": 1096,
+      "label_line": 59,
+      "rule": "dart_table.LABELS[issue_date]"
+     }
+    },
+    "conversion_start_date": {
+     "value": "2026-03-31",
+     "locator": {
+      "label": "전환청구기간/시작일",
+      "raw": "2026년 03월 31일",
+      "value": "2026-03-31",
+      "line": 50,
+      "char_start": 829,
+      "char_end": 842,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "conversion_end_date": {
+     "value": "2028-08-31",
+     "locator": {
+      "label": "전환청구기간/종료일",
+      "raw": "2028년 08월 31일",
+      "value": "2028-08-31",
+      "line": 52,
+      "char_start": 851,
+      "char_end": 864,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "put_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-09-30"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "조기상환청구권",
+      "first_date_candidate": "2026-09-30",
+      "line": 57,
+      "char_start": 927,
+      "char_end": 934,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    },
+    "call_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-03-31"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "매도청구권",
+      "first_date_candidate": "2026-03-31",
+      "line": 58,
+      "char_start": 1008,
+      "char_end": 1013,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    }
+   }
+  },
+  {
+   "rcept_no": "20260115990004",
+   "rcept_dt": "20260115",
+   "kind": "correction",
+   "values": {
+    "principal_krw": "3000000000",
+    "coupon_rate_pct": "1.0",
+    "redemption_yield_pct": "4.5",
+    "maturity_date": "2028-09-30",
+    "conversion_price_krw": "8500",
+    "refixing_floor_krw": "6000",
+    "issue_date": "2025-03-31"
+   },
+   "link_method": "v2_rule",
+   "link_status": null,
+   "changed_items": [
+    "3. 정정사항",
+    "9. 전환에 관한 사항"
+   ],
+   "doc_sha256": "3ebd8337a8be32a5be28f4d3b4a20c709bf94e3a588555fbe790b247828620e9",
+   "terms_cache": {
+    "principal_krw": {
+     "value": "3000000000",
+     "locator": {
+      "label": "2. 사채의 권면(전자등록)총액 (원)",
+      "raw": "3,000,000,000",
+      "line": 25,
+      "char_start": 492,
+      "char_end": 505,
+      "label_line": 24,
+      "rule": "dart_table.LABELS[principal_krw]"
+     }
+    },
+    "coupon_rate_pct": {
+     "value": "1.0",
+     "locator": {
+      "label": "표면이자율 (%)",
+      "raw": "1.0",
+      "line": 28,
+      "char_start": 532,
+      "char_end": 535,
+      "label_line": 27,
+      "rule": "dart_table.LABELS[coupon_rate_pct]"
+     }
+    },
+    "redemption_yield_pct": {
+     "value": "4.5",
+     "locator": {
+      "label": "만기이자율 (%)",
+      "raw": "4.5",
+      "line": 30,
+      "char_start": 550,
+      "char_end": 553,
+      "label_line": 29,
+      "rule": "dart_table.LABELS[redemption_yield_pct]"
+     }
+    },
+    "maturity_date": {
+     "value": "2028-09-30",
+     "locator": {
+      "label": "5. 사채만기일",
+      "raw": "2028년 09월 30일",
+      "line": 32,
+      "char_start": 567,
+      "char_end": 580,
+      "label_line": 31,
+      "rule": "dart_table.LABELS[maturity_date]"
+     }
+    },
+    "conversion_price_krw": {
+     "value": "8500",
+     "locator": {
+      "label": "전환가액 (원/주)",
+      "raw": "8,500",
+      "line": 39,
+      "char_start": 645,
+      "char_end": 650,
+      "label_line": 38,
+      "rule": "dart_table.LABELS[conversion_price_krw]"
+     }
+    },
+    "refixing_floor_krw": {
+     "value": "6000",
+     "locator": {
+      "label": "최저 조정가액 (원)",
+      "raw": "6,000",
+      "line": 47,
+      "char_start": 736,
+      "char_end": 741,
+      "label_line": 46,
+      "rule": "dart_table.LABELS[refixing_floor_krw]"
+     }
+    },
+    "issue_date": {
+     "value": "2025-03-31",
+     "locator": {
+      "label": "12. 납입일",
+      "raw": "2025년 03월 31일",
+      "line": 52,
+      "char_start": 922,
+      "char_end": 935,
+      "label_line": 51,
+      "rule": "dart_table.LABELS[issue_date]"
+     }
+    },
+    "conversion_start_date": {
+     "value": "2026-03-31",
+     "locator": {
+      "label": "전환청구기간/시작일",
+      "raw": "2026년 03월 31일",
+      "value": "2026-03-31",
+      "line": 42,
+      "char_start": 668,
+      "char_end": 681,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "conversion_end_date": {
+     "value": "2028-08-31",
+     "locator": {
+      "label": "전환청구기간/종료일",
+      "raw": "2028년 08월 31일",
+      "value": "2028-08-31",
+      "line": 44,
+      "char_start": 690,
+      "char_end": 703,
+      "rule": "asof_terms.extract_extra"
+     }
+    },
+    "put_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-09-30"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "조기상환청구권",
+      "first_date_candidate": "2026-09-30",
+      "line": 49,
+      "char_start": 766,
+      "char_end": 773,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    },
+    "call_option": {
+     "value": {
+      "present": true,
+      "first_date_candidate": "2026-03-31"
+     },
+     "locator": {
+      "present": true,
+      "status": "keyword_found",
+      "keyword": "매도청구권",
+      "first_date_candidate": "2026-03-31",
+      "line": 50,
+      "char_start": 847,
+      "char_end": 852,
+      "rule": "asof_terms.extract_options"
+     },
+     "option_status": "keyword_found"
+    }
+   }
+  }
+ ],
+ "synthetic": true
+}

@@ -1,0 +1,38 @@
+[
+ {
+  "rcept_no": "20250314990001",
+  "rcept_dt": "20250314",
+  "corp_code": "SYNTH001",
+  "corp_cls": "E",
+  "is_correction": false,
+  "report_nm": "주요사항보고서(전환사채권발행결정) [SYNTHETIC]",
+  "synthetic": true
+ },
+ {
+  "rcept_no": "20250620990002",
+  "rcept_dt": "20250620",
+  "corp_code": "SYNTH001",
+  "corp_cls": "E",
+  "is_correction": true,
+  "report_nm": "[기재정정]주요사항보고서(전환사채권발행결정) [SYNTHETIC]",
+  "synthetic": true
+ },
+ {
+  "rcept_no": "20250930990003",
+  "rcept_dt": "20250930",
+  "corp_code": "SYNTH001",
+  "corp_cls": "E",
+  "is_correction": true,
+  "report_nm": "[기재정정]주요사항보고서(전환사채권발행결정) [SYNTHETIC]",
+  "synthetic": true
+ },
+ {
+  "rcept_no": "20260115990004",
+  "rcept_dt": "20260115",
+  "corp_code": "SYNTH001",
+  "corp_cls": "E",
+  "is_correction": true,
+  "report_nm": "[기재정정]주요사항보고서(전환사채권발행결정) [SYNTHETIC]",
+  "synthetic": true
+ }
+]

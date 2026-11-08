@@ -1,0 +1,580 @@
+{
+ "tool": "terms.resolve_asof",
+ "version": "4.1.0",
+ "chain_origin": "20250314990001",
+ "corp_code": "SYNTH001",
+ "series": "1",
+ "as_of": "2025-06-18",
+ "versions_total": 4,
+ "excluded_after_asof": [
+  {
+   "rcept_no": "20250930990003",
+   "rcept_dt": "20250930",
+   "kind": "correction",
+   "reason": "filed_after_asof",
+   "date_key": "20250930",
+   "dart_url": "synthetic://20250930990003"
+  },
+  {
+   "rcept_no": "20260115990004",
+   "rcept_dt": "20260115",
+   "kind": "correction",
+   "reason": "filed_after_asof",
+   "date_key": "20260112",
+   "dart_url": "synthetic://20260115990004"
+  }
+ ],
+ "date_key_mode": "effective",
+ "rule": "효력일 키(R6): 공시에 적힌 결의일·조정가액 적용일, 없으면 접수일(fallback 표시). 효력일이 공시로 확정 안 돼 값이 갈리면 '확인 필요(효력일 미확정)'(R7). 계약서 대조 전 확정 아님.",
+ "status": "RESOLVED",
+ "selected_version": {
+  "rcept_no": "20250620990002",
+  "rcept_dt": "20250620",
+  "kind": "correction",
+  "index": 1,
+  "link_method": "v2_rule",
+  "link_status": null,
+  "dart_url": "synthetic://20250620990002",
+  "effective": {
+   "key": "20250616",
+   "lo": "20250616",
+   "hi": "20250620",
+   "basis": "new_board_resolution",
+   "disclosed": true,
+   "board_dt": "20250616",
+   "board_src": "form:이사회결의일(결정일)",
+   "date_key_fallback": false
+  }
+ },
+ "terms": {
+  "principal_krw": {
+   "field": "principal_krw",
+   "label_ko": "권면총액",
+   "unit": "KRW",
+   "value": "3000000000",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "2. 사채의 권면(전자등록)총액 (원)",
+     "raw": "3,000,000,000",
+     "line": 25,
+     "char_start": 489,
+     "char_end": 502,
+     "label_line": 24,
+     "rule": "dart_table.LABELS[principal_krw]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "review_required": false
+  },
+  "coupon_rate_pct": {
+   "field": "coupon_rate_pct",
+   "label_ko": "표면이자율",
+   "unit": "%",
+   "value": "1.0",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "표면이자율 (%)",
+     "raw": "1.0",
+     "line": 28,
+     "char_start": 529,
+     "char_end": 532,
+     "label_line": 27,
+     "rule": "dart_table.LABELS[coupon_rate_pct]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "review_required": false
+  },
+  "redemption_yield_pct": {
+   "field": "redemption_yield_pct",
+   "label_ko": "만기이자율",
+   "unit": "%",
+   "value": "4.0",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "만기이자율 (%)",
+     "raw": "4.0",
+     "line": 30,
+     "char_start": 547,
+     "char_end": 550,
+     "label_line": 29,
+     "rule": "dart_table.LABELS[redemption_yield_pct]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "UNCONFIRMED_DEPENDS",
+   "status_ko": "확인 필요(효력일 미확정)",
+   "alternative_values": [
+    "4.0",
+    "4.5"
+   ],
+   "auto_verdict_allowed": false,
+   "approval_required": true,
+   "review_required": true,
+   "changes_after_asof": [
+    {
+     "rcept_no": "20250930990003",
+     "rcept_dt": "20250930",
+     "value": "4.5"
+    },
+    {
+     "rcept_no": "20260115990004",
+     "rcept_dt": "20260115",
+     "value": "4.5"
+    }
+   ]
+  },
+  "maturity_date": {
+   "field": "maturity_date",
+   "label_ko": "사채만기일",
+   "unit": "date",
+   "value": "2028-03-31",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "5. 사채만기일",
+     "raw": "2028년 03월 31일",
+     "line": 32,
+     "char_start": 564,
+     "char_end": 577,
+     "label_line": 31,
+     "rule": "dart_table.LABELS[maturity_date]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "UNCONFIRMED_DEPENDS",
+   "status_ko": "확인 필요(효력일 미확정)",
+   "alternative_values": [
+    "2028-03-31",
+    "2028-09-30"
+   ],
+   "auto_verdict_allowed": false,
+   "approval_required": true,
+   "review_required": true,
+   "changes_after_asof": [
+    {
+     "rcept_no": "20250930990003",
+     "rcept_dt": "20250930",
+     "value": "2028-09-30"
+    },
+    {
+     "rcept_no": "20260115990004",
+     "rcept_dt": "20260115",
+     "value": "2028-09-30"
+    }
+   ]
+  },
+  "conversion_price_krw": {
+   "field": "conversion_price_krw",
+   "label_ko": "전환가액",
+   "unit": "KRW/share",
+   "value": "8500",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "전환가액 (원/주)",
+     "raw": "8,500",
+     "line": 39,
+     "char_start": 642,
+     "char_end": 647,
+     "label_line": 38,
+     "rule": "dart_table.LABELS[conversion_price_krw]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002"
+   },
+   "changed_since_origin": true,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "납입일 뒤 정정 — 계약상 효력일·소급 여부 공시만으로 확정 불가",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "UNCONFIRMED_DEPENDS",
+   "status_ko": "확인 필요(효력일 미확정)",
+   "alternative_values": [
+    "10000",
+    "8500"
+   ],
+   "auto_verdict_allowed": false,
+   "approval_required": true,
+   "review_required": true
+  },
+  "refixing_floor_krw": {
+   "field": "refixing_floor_krw",
+   "label_ko": "리픽싱 하한(최저조정가액)",
+   "unit": "KRW/share",
+   "value": "7000",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "최저 조정가액 (원)",
+     "raw": "7,000",
+     "line": 47,
+     "char_start": 733,
+     "char_end": 738,
+     "label_line": 46,
+     "rule": "dart_table.LABELS[refixing_floor_krw]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "review_required": false,
+   "changes_after_asof": [
+    {
+     "rcept_no": "20260115990004",
+     "rcept_dt": "20260115",
+     "value": "6000"
+    }
+   ]
+  },
+  "issue_date": {
+   "field": "issue_date",
+   "label_ko": "납입일",
+   "unit": "date",
+   "value": "2025-03-31",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "12. 납입일",
+     "raw": "2025년 03월 31일",
+     "line": 52,
+     "char_start": 919,
+     "char_end": 932,
+     "label_line": 51,
+     "rule": "dart_table.LABELS[issue_date]"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "review_required": false
+  },
+  "conversion_start_date": {
+   "field": "conversion_start_date",
+   "label_ko": "전환청구 시작일",
+   "unit": "date",
+   "value": "2026-03-31",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "전환청구기간/시작일",
+     "raw": "2026년 03월 31일",
+     "value": "2026-03-31",
+     "line": 42,
+     "char_start": 665,
+     "char_end": 678,
+     "rule": "asof_terms.extract_extra"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "review_required": false
+  },
+  "conversion_end_date": {
+   "field": "conversion_end_date",
+   "label_ko": "전환청구 종료일",
+   "unit": "date",
+   "value": "2028-02-29",
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "label": "전환청구기간/종료일",
+     "raw": "2028년 02월 29일",
+     "value": "2028-02-29",
+     "line": 44,
+     "char_start": 687,
+     "char_end": 700,
+     "rule": "asof_terms.extract_extra"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "UNCONFIRMED_DEPENDS",
+   "status_ko": "확인 필요(효력일 미확정)",
+   "alternative_values": [
+    "2028-02-29",
+    "2028-08-31"
+   ],
+   "auto_verdict_allowed": false,
+   "approval_required": true,
+   "review_required": true
+  },
+  "put_option": {
+   "field": "put_option",
+   "label_ko": "조기상환청구권(풋)",
+   "unit": "presence+date",
+   "value": {
+    "present": true,
+    "first_date_candidate": "2026-09-30"
+   },
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "present": true,
+     "status": "keyword_found",
+     "keyword": "조기상환청구권",
+     "first_date_candidate": "2026-09-30",
+     "line": 49,
+     "char_start": 763,
+     "char_end": 770,
+     "rule": "asof_terms.extract_options"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "option_status": "keyword_found",
+   "review_required": true,
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+  },
+  "call_option": {
+   "field": "call_option",
+   "label_ko": "매도청구권(콜)",
+   "unit": "presence+date",
+   "value": {
+    "present": true,
+    "first_date_candidate": "2026-03-31"
+   },
+   "source": {
+    "rcept_no": "20250620990002",
+    "rcept_dt": "20250620",
+    "kind": "correction",
+    "dart_url": "synthetic://20250620990002",
+    "doc_sha256": "70da48315d51405a3dec136e81e5a2d4b7c943a70c7d2aed7de11fa0b541387b",
+    "locator": {
+     "present": true,
+     "status": "keyword_found",
+     "keyword": "매도청구권",
+     "first_date_candidate": "2026-03-31",
+     "line": 50,
+     "char_start": 844,
+     "char_end": 849,
+     "rule": "asof_terms.extract_options"
+    },
+    "link_method": "v2_rule"
+   },
+   "established_in": {
+    "rcept_no": "20250314990001",
+    "rcept_dt": "20250314",
+    "kind": "original",
+    "dart_url": "synthetic://20250314990001"
+   },
+   "changed_since_origin": false,
+   "link_review_required": false,
+   "contract_effective_confirmed": false,
+   "contract_effective_note": "공시 기재 효력일/접수일 기준 선택 — 계약서 대조 전 확정 아님",
+   "date_key": {
+    "mode": "effective",
+    "basis": "new_board_resolution",
+    "key_dt": "20250616",
+    "date_key_fallback": false
+   },
+   "effective_status": "NOT_DEPENDENT",
+   "option_status": "keyword_found",
+   "review_required": true,
+   "note": "옵션 존재·최초 날짜 후보만. 행사가·비율·기간 세부는 해석하지 않음 → 사람 확인"
+  }
+ },
+ "review_required": true,
+ "unconfirmed_fields": [
+  "redemption_yield_pct",
+  "maturity_date",
+  "conversion_price_krw",
+  "conversion_end_date"
+ ]
+}
