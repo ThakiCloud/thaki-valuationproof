@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ValuationProof Demo</title>
+<style>
+:root{--bg:#fafaf9;--fg:#1c1917;--muted:#57534e;--line:#e7e5e4;--card:#ffffff;--accent:#4338ca;--warn:#92400e;--warnbg:#fef3c7}
+@media (prefers-color-scheme: dark){:root{--bg:#1c1917;--fg:#f5f5f4;--muted:#a8a29e;--line:#44403c;--card:#292524;--accent:#a5b4fc;--warn:#fde68a;--warnbg:#422006}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}h1{font-size:1.5rem;margin:0 0 4px}h2{font-size:1.15rem;margin:32px 0 8px}
+.muted{color:var(--muted)}a{color:var(--accent)}.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+.note{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:12px 16px;margin:12px 0}.note ul{margin:4px 0;padding-left:20px}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+.scroll{overflow-x:auto}button,input,select{font:inherit;padding:6px 10px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+button.primary{background:var(--accent);color:var(--bg);border-color:var(--accent);cursor:pointer}button:disabled{opacity:.5}
+iframe{width:100%;height:640px;border:1px solid var(--line);border-radius:8px;background:#fff}code{font-size:.92em}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+</style>
+</head>
+<body><main>
+<h1>ValuationProof — 기준일 CB 조건 × 평가 Excel 대조 (합성 데모)</h1>
+<p class="muted">전환사채 공시·정정공시 사슬에서 평가 기준일에 유효한 조건을 고르고, 평가 Excel 입력 셀과 대조해 근거 보고서를 만드는 결정론 도구 ·
+코드 <a href="https://github.com/ThakiCloud/thaki-valuationproof">github.com/ThakiCloud/thaki-valuationproof</a> · Apache-2.0</p>
+
+<div class="note"><b>모든 데이터는 합성(SYNTHETIC)입니다.</b> 가상 발행사 <code>SYNTH001</code>의 가상 공시 사슬(원공시 1 + 정정 3)과 합성 평가 Excel 4종입니다.
+실제 회사·실제 공시·실제 회계사 평가모형이 아닙니다. 결과는 사람이 검토할 후보(PENDING)이며, 자동 수정이나 공정가치 계산은 하지 않습니다. All data is synthetic; findings are review candidates, not verdicts.</div>
+
+<div class="note"><b>한계 (V4.1 고정판)</b><ul>
+<li>전환가액조정 공시는 자동 수집하지 않습니다. <code>chain["adjustments"]</code>로 넣을 때만 반영됩니다.</li>
+<li>실제 DART 공시의 모든 조건을 완전히 감사한다고 주장하지 않습니다.</li>
+<li>공개 표본에서 '표시 없이 틀린 값 0건'은 그 표본(60개사)과 두 해석(IA/IB) 범위 안의 결과입니다. 정확도 100%가 아니라, 불확실한 조건을 <code>확인 필요</code>로 돌린 결과입니다.</li>
+<li>그 대가로 분기말 24.3%(138/567)는 사람이 확인해야 합니다.</li>
+<li>실제 회계사 Excel로는 평가하지 않았습니다.</li>
+<li>V4.2(조정공시 자동 수집·bitemporal)는 개발 중인 로드맵입니다.</li></ul></div>
+
+<h2>1. 브라우저에서 직접 실행</h2>
+<div class="card">
+<p class="muted">패키지 코드를 이 페이지 안에서 Pyodide(브라우저 Python)로 돌립니다. 서버로 보내는 데이터는 없습니다. 처음 실행할 때 Pyodide와 openpyxl을 내려받아 수십 초가 걸릴 수 있습니다.</p>
+<div class="row"><label>평가 기준일 <input id="asof" value="2025-10-01" size="11"></label>
+<button class="primary" id="run" disabled>데모 실행</button><span id="status" class="muted">Python 런타임 준비 중…</span></div>
+<p class="muted">2025-06-18을 넣어 보세요. C1(전환가액 10,000→8,500)의 이사회결의일은 2025-06-16이고 접수일은 2025-06-20입니다. 기준일이 그 사이면 전환가액은 <b>확인 필요(효력일 미확정)</b>로 나옵니다.</p>
+<div class="scroll"><table id="cases" hidden><thead><tr><th>사례</th><th>워크북</th><th>일치</th><th>불일치</th><th>누락</th><th>미확인</th><th>확인 필요</th><th>찾은 오류</th><th>기대 충족</th></tr></thead><tbody></tbody></table></div>
+<div class="row" id="pick" hidden><label>보고서 <select id="case"></select></label></div>
+<iframe id="live" hidden title="live report"></iframe>
+</div>
+
+<h2>2. 미리 생성한 보고서 (기준일 2025-10-01)</h2>
+<div class="card"><ul>
+<li><a href="reports/SYNTH_normal_report.html">정상 워크북</a> · <a href="reports/SYNTH_normal.xlsx">xlsx</a></li>
+<li><a href="reports/SYNTH_stale_correction_report.html">정정 전 값을 쓴 워크북</a> · <a href="reports/SYNTH_stale_correction.xlsx">xlsx</a></li>
+<li><a href="reports/SYNTH_refix_maturity_typo_report.html">리픽싱 하한·만기 오타</a> · <a href="reports/SYNTH_refix_maturity_typo.xlsx">xlsx</a></li>
+<li><a href="reports/SYNTH_transposed_synonym_report.html">행·열 전치 + 동의어 라벨</a> · <a href="reports/SYNTH_transposed_synonym.xlsx">xlsx</a></li>
+<li><a href="reports/effective_date_2025-06-18_SYNTH_stale_correction_report.html">효력일 미확정 예시 (기준일 2025-06-18)</a></li>
+<li><a href="reports/demo_summary.json">demo_summary.json</a></li></ul>
+<p class="muted">실제 공시 모드(본인 OpenDART 키)와 Gradio 앱은 GitHub 저장소의 CLI·<code>space/</code>에 있습니다. 이 페이지에서는 쓰지 않습니다.</p></div>
+</main>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script>
+const $=id=>document.getElementById(id); let py=null, reports={};
+async function boot(){
+  try{
+    py=await loadPyodide(); await py.loadPackage("micropip"); await py.pyimport("micropip").install("openpyxl");
+    const files=await (await fetch("valuationproof/manifest.json")).json();
+    py.FS.mkdirTree("/vp/valuationproof/schemas");
+    for(const f of files){const t=await (await fetch("valuationproof/"+f)).text(); py.FS.writeFile("/vp/valuationproof/"+f,t);}
+    $("status").textContent="준비됨"; $("run").disabled=false;
+  }catch(e){$("status").textContent="런타임을 불러오지 못했습니다. 아래 미리 생성한 보고서를 보세요. ("+e+")";}
+}
+$("run").onclick=async()=>{
+  $("run").disabled=true; $("status").textContent="실행 중…";
+  try{
+    py.globals.set("ASOF",$("asof").value.trim()||"2025-10-01");
+    const out=py.runPython(`
+import sys, io, json, contextlib, shutil, pathlib
+sys.path.insert(0, "/vp")
+from valuationproof import cli
+d = pathlib.Path("/tmp/vp_demo")
+if d.exists(): shutil.rmtree(d)
+with contextlib.redirect_stdout(io.StringIO()): cli.main(["demo", "--out", str(d), "--asof", ASOF])
+s = json.loads((d / "demo_summary.json").read_text(encoding="utf-8"))
+rep = {pathlib.Path(c["workbook"]).stem: (d / (pathlib.Path(c["workbook"]).stem + "_report.html")).read_text(encoding="utf-8") for c in s["cases"]}
+json.dumps({"s": s, "rep": rep}, ensure_ascii=False, default=str)`);
+    const o=JSON.parse(out); reports=o.rep; const tb=$("cases").querySelector("tbody"); tb.innerHTML=""; $("case").innerHTML="";
+    for(const c of o.s.cases){const k=c.counts, w=c.workbook.split("/").pop();
+      tb.insertAdjacentHTML("beforeend",`<tr><td>${c.case}</td><td>${w}</td><td>${k["일치"]??0}</td><td>${k["불일치"]??0}</td><td>${k["누락"]??0}</td><td>${k["미확인"]??0}</td><td>${k["확인 필요(효력일 미확정)"]??0}</td><td>${c.errors_found}</td><td>${c.expectation_met?"예":"아니오"}</td></tr>`);
+      $("case").insertAdjacentHTML("beforeend",`<option>${w.replace(/\.xlsx$/,"")}</option>`);}
+    $("cases").hidden=false; $("pick").hidden=false; $("live").hidden=false; show();
+    $("status").textContent=`기준일 ${o.s.as_of} · 기대 결과 충족: ${o.s.all_expectations_met}` + (o.s.as_of!=="2025-10-01" ? " (기대 결과는 기본 기준일 2025-10-01 기준으로 정의되어 있습니다)" : "");
+    document.body.dataset.done="1";
+  }catch(e){$("status").textContent="실행 오류: "+e;}
+  $("run").disabled=false;
+};
+function show(){$("live").srcdoc=reports[$("case").value]||"";}
+$("case").onchange=show; boot();
+</script>
+</body></html>

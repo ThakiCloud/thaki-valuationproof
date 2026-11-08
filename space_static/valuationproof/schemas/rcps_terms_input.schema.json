@@ -1,0 +1,38 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "valuationproof.rcps_terms_input.v0",
+ "title": "비상장 RCPS(상환전환우선주) 조건 입력 — 스키마만(고객 실증 필요)",
+ "description": "계약서(투자계약·주주간계약·정관)에서 사람이 옮겨 적은 조건을 받는 입력 형식. 자동 추출기는 없다. 이 스키마로 검증된 공정가치·추출 정확도는 아직 없다(status=CUSTOMER_EVIDENCE_REQUIRED).",
+ "type": "object",
+ "required": ["instrument_id", "as_of", "issue", "redemption", "preferred_dividend", "conversion", "sources"],
+ "properties": {
+  "instrument_id": {"type": "string"},
+  "as_of": {"type": "string", "format": "date"},
+  "issue": {"type": "object", "required": ["issue_date", "shares", "issue_price_krw"],
+            "properties": {"issue_date": {"type": "string", "format": "date"}, "shares": {"type": "integer", "minimum": 1},
+                           "issue_price_krw": {"type": "number", "exclusiveMinimum": 0}, "par_value_krw": {"type": "number"}}},
+  "redemption": {"type": "object", "description": "상환권(조기상환)",
+                 "required": ["holder_put", "first_exercise_date", "redemption_amount_basis"],
+                 "properties": {"holder_put": {"type": "boolean"}, "issuer_call": {"type": "boolean"},
+                                "first_exercise_date": {"type": "string", "format": "date"}, "last_exercise_date": {"type": "string", "format": "date"},
+                                "redemption_amount_basis": {"enum": ["issue_price_plus_irr", "issue_price_plus_simple", "fixed_amount", "other"]},
+                                "redemption_irr_pct": {"type": "number"}, "deduct_paid_dividends": {"type": "boolean"},
+                                "distributable_profit_limit": {"type": "boolean", "description": "상법상 배당가능이익 한도 내 상환 여부"}}},
+  "preferred_dividend": {"type": "object", "description": "우선배당",
+                         "required": ["rate_pct", "cumulative", "participating"],
+                         "properties": {"rate_pct": {"type": "number"}, "base": {"enum": ["issue_price", "par_value", "other"]},
+                                        "cumulative": {"type": "boolean"}, "participating": {"type": "boolean"}}},
+  "conversion": {"type": "object", "description": "전환비율 조정(리픽싱·희석 방지)",
+                 "required": ["initial_ratio", "conversion_start_date", "conversion_end_date", "refixing"],
+                 "properties": {"initial_ratio": {"type": "number", "exclusiveMinimum": 0},
+                                "conversion_start_date": {"type": "string", "format": "date"}, "conversion_end_date": {"type": "string", "format": "date"},
+                                "auto_conversion_at_end": {"type": "boolean"},
+                                "refixing": {"type": "object", "properties": {
+                                  "market_price_refix": {"type": "boolean"}, "floor_pct_of_initial": {"type": "number"},
+                                  "ipo_price_refix": {"type": "boolean"}, "ipo_refix_pct": {"type": "number"},
+                                  "performance_refix": {"type": "boolean"}, "down_round_antidilution": {"enum": ["full_ratchet", "weighted_average", "none", "other"]}}}}},
+  "sources": {"type": "array", "minItems": 1, "description": "조건마다 계약서 근거(파일 sha256 + 조항·페이지). 고객 자료는 고객 환경 안에서만.",
+              "items": {"type": "object", "required": ["field", "doc_sha256", "locator"],
+                        "properties": {"field": {"type": "string"}, "doc_sha256": {"type": "string"}, "locator": {"type": "string"}}}}
+ }
+}

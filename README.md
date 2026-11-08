@@ -41,6 +41,12 @@
 - Excel 은 수정하지 않습니다(감사 전후 sha256 동일 확인). 수정 제안은 `requires_approval = true`, `auto_applied = false`.
 - 풋·콜은 "있다/없다 + 최초 날짜 후보"만 냅니다. 행사가·비율 등 세부는 해석하지 않고 항상 사람 확인입니다.
 
+## 데모 (Hugging Face Space)
+
+[ThakiCloud/ValuationProof-Demo](https://huggingface.co/spaces/ThakiCloud/ValuationProof-Demo) 는 정적 페이지입니다. 같은 패키지 코드(`space_static/valuationproof/`)를
+**브라우저 안에서 Pyodide 로** 돌리므로 서버로 보내는 데이터가 없습니다. 페이지는 Pyodide(MPL-2.0)를 cdn.jsdelivr.net 에서, openpyxl(MIT)을 PyPI 에서 받습니다.
+미리 생성한 합성 보고서도 함께 있습니다. 워크북 업로드가 되는 Gradio 앱은 `space/` 에 있으며 로컬에서 `pip install -e .[demo] && python space/app.py` 로 띄울 수 있습니다.
+
 ## 설치
 
 ```bash
