@@ -15,6 +15,10 @@ DEMO = WORK / "demo"
 NOTICE = ("**모든 데이터는 합성(SYNTHETIC)입니다.** 가상 발행사 `SYNTH001`의 가상 공시 체인(원공시 1 + 정정 3)과 합성 평가 Excel 4종입니다. "
           "실제 회사·실제 공시·실제 회계사 평가모형이 아닙니다. 결과는 사람 검토용 후보(PENDING)이며 자동 수정·공정가치 계산은 하지 않습니다. "
           "All data is synthetic; findings are review candidates, not verdicts.")
+LIMITS = ("\n\n**한계 (V4.1 고정판)** — 전환가액조정 공시는 자동 수집하지 않습니다(`chain[\"adjustments\"]` 로 넣을 때만 반영). "
+          "실제 DART 전체 조건을 완전 감사한다고 주장하지 않습니다. 공개 표본에서 '표시 없는 오류 0건'은 그 표본·두 해석(IA/IB) 범위 안의 결과이며 "
+          "정확도 100% 가 아닙니다(불확실한 조건을 `확인 필요`로 돌린 결과). 그 대가로 분기말 24.3%(138/567)는 사람 확인이 필요합니다. "
+          "실제 회계사 Excel 로는 평가하지 않았습니다. V4.2(조정공시 자동 수집·bitemporal)는 개발 중인 로드맵입니다.")
 
 
 def _run_demo(asof: str):
@@ -66,7 +70,7 @@ def resolve_terms(asof):
 
 
 with gr.Blocks(title="ValuationProof Demo") as demo:
-    gr.Markdown("# ValuationProof — 기준일 CB 조건 × 평가 Excel 대조 (합성 데모)\n" + NOTICE +
+    gr.Markdown("# ValuationProof — 기준일 CB 조건 × 평가 Excel 대조 (합성 데모)\n" + NOTICE + LIMITS +
                 "\n\n코드: [github.com/ThakiCloud/thaki-valuationproof](https://github.com/ThakiCloud/thaki-valuationproof) · Apache-2.0")
     with gr.Tab("합성 데모 4종"):
         asof = gr.Textbox(value=synthetic.DEFAULT_ASOF, label="평가 기준일 (YYYY-MM-DD)")

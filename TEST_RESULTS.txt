@@ -1,4 +1,4 @@
 # pytest -q  (python 3.12.8, 2026-11-08)
 # source_commit_sha 800a60149e0c44b6d279c08187c7928c0dcb374b
-60 passed in 0.62s
+60 passed in 0.78s
 exit=0

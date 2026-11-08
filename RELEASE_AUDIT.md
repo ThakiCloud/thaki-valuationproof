@@ -6,7 +6,7 @@
 
 ## 1. 테스트
 
-`pytest -q` → `60 passed in 0.62s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
+`pytest -q` → `60 passed in 0.78s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
 
 ## 2. 공개 표면 게이트 (release guard)
 
@@ -25,8 +25,7 @@
   - WARN · org-repo · `space/README.md` · ThakiCloud/thaki-valuationproof
   - WARN · company-name · `space/app.py` · ThakiCloud
   - WARN · org-repo · `space/app.py` · ThakiCloud/thaki-valuationproof
-  - WARN · history:company-name · `git history` · 내용 31건
-  - WARN · dead-link:missing-repo · `존재하지 않음` · ThakiCloud/thaki-valuationproof
+  - WARN · history:company-name · `git history` · 내용 38건
 
 ## 3. 시크릿·내부 정보 스캔 (트리 + xlsx 내부 XML + git 히스토리(시크릿 값))
 
