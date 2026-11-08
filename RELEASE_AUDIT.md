@@ -6,11 +6,11 @@
 
 ## 1. 테스트
 
-`pytest -q` → `60 passed in 0.68s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
+`pytest -q` → `60 passed in 0.62s` (exit 0). 전문은 [TEST_RESULTS.txt](TEST_RESULTS.txt).
 
 ## 2. 공개 표면 게이트 (release guard)
 
-- 프로필 `personal-portfolio` (회사명은 경고, 실명·계정 핸들·내부 인프라·시크릿·커밋 신원 검사) · 히스토리 제외(커밋 전 사전 점검).
+- 프로필 `personal-portfolio` (회사명은 경고, 실명·계정 핸들·내부 인프라·시크릿·커밋 신원 검사) · git 히스토리(내용·경로·커밋 메시지)·author/committer 포함.
 - 차단(BLOCK) 0건. 경고는 회사명 `ThakiCloud`·조직 저장소 이름(공식 조직 공개라 의도된 표기)뿐입니다.
   - WARN · company-name · `SOURCE.json` · ThakiCloud
   - WARN · company-name · `pyproject.toml` · ThakiCloud
@@ -25,9 +25,10 @@
   - WARN · org-repo · `space/README.md` · ThakiCloud/thaki-valuationproof
   - WARN · company-name · `space/app.py` · ThakiCloud
   - WARN · org-repo · `space/app.py` · ThakiCloud/thaki-valuationproof
+  - WARN · history:company-name · `git history` · 내용 31건
   - WARN · dead-link:missing-repo · `존재하지 않음` · ThakiCloud/thaki-valuationproof
 
-## 3. 시크릿·내부 정보 스캔 (트리 + xlsx 내부 XML)
+## 3. 시크릿·내부 정보 스캔 (트리 + xlsx 내부 XML + git 히스토리(시크릿 값))
 
 | 항목 | 건수 |
 |---|---|
